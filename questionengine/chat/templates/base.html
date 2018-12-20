@@ -1,0 +1,30 @@
+<html>
+	<head>
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+		 <div class="column">
+			<div>
+				<object type="image/svg+xml" data="{% static 'logo.svg' %}" class="logo">
+					<img src="{% static 'logo.png' %}", alt="Nora Clark Logo"/>
+				</object>
+			</div>
+			<br>
+			<div class="nav">
+				<a class="{% block homelink %}{% endblock %}" href="/">Home</a>
+				<span> | </span>
+				<a class="{% block aboutlink %}{% endblock %}" href="/about">About</a>
+			</div>
+			<h1>{% block header %}{% endblock %}</h1>
+			<div>
+				{% block content %}{% endblock %}
+			</div>
+			<div class="footer">
+				{% block footer %}{% endblock %}
+			</div>
+		</div>
+	</body>
+</html>
+
