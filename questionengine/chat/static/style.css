@@ -6,6 +6,10 @@ table {
     width: 100%;
 }
 
+h1 {
+    font-family: "Courier", "Courier New", monospace;
+}
+
 .nav > a :visited {
     color: #0000ff;
 }
@@ -22,6 +26,7 @@ a.active {
 
 .column {
     margin: 0 auto;
+    padding: 0 1% 0 1%;
     max-width: 480px;
 }
 

@@ -1,26 +1,25 @@
 {% extends "base.html" %}
 
 {% block homelink %}active{% endblock %}
-{% block title %}Nora Clark{% endblock %}
-{% block header %}I'm Nora{%endblock %}
+{% block title %}Talk To Ava{% endblock %}
+{% block header %}Hi. I'm Ava{%endblock %}
 {% block content %}
-<p><i>I'm a bot. Talk To me.</i></p>
-<br>
 <table>
+	{% for message in messages %}
 	<tr>
+		{% if message.from_ava %}
 		<th class="light-grey-1">Nora</th>
-		<td>Tell me about yourself</td>
-	</tr>
-	<tr>
-	</tr>
-	<tr>
+		{% else %}
 		<th class="light-grey-2">You</th>
-		<td>What should I say?</td>
+		{% endif %}
+		<td>{{ message.message }}<br></td>
 	</tr>
+	{% endfor %}
 </table>
 <br>
-<form>
-<input type="textarea">
-<input type="submit" value="submit">
+<form action="/" method="post">
+	{% csrf_token %}
+	{{ form }}
+	<input type="submit" value="Submit">
 </form>
 {% endblock %}
