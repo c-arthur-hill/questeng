@@ -2,17 +2,18 @@
 
 {% block homelink %}active{% endblock %}
 {% block title %}Talk To Ava{% endblock %}
-{% block header %}Hi. I'm Ava{%endblock %}
+{% block header %}Talk to me.{%endblock %}
 {% block content %}
+<p><i>My name is Ava.<br>I want to be your mentor.<br>I ask you questions.</i></p>
 <table>
 	{% for message in messages %}
 	<tr>
 		{% if message.from_ava %}
-		<th class="light-grey-1">Nora</th>
+		<th class="light-grey-1">Ava</th>
 		{% else %}
 		<th class="light-grey-2">You</th>
 		{% endif %}
-		<td>{{ message.message }}<br></td>
+		<td>{{ message.message }}</td>
 	</tr>
 	{% endfor %}
 </table>

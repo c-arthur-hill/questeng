@@ -1,0 +1,50 @@
+1546137156.822002 client started (11468): version 2.6, socket /tmp/tmux-1000/default, protocol 8
+1546137156.822022 on Linux 4.15.0-1021-aws #21-Ubuntu SMP Tue Aug 28 10:23:07 UTC 2018; libevent 2.1.8-stable (poll)
+1546137156.822036 socket is /tmp/tmux-1000/default
+1546137156.822046 trying connect
+1546137156.822059 connect failed: No such file or directory
+1546137156.822066 lock file is /tmp/tmux-1000/default.lock
+1546137156.822083 flock succeeded
+1546137156.822086 got lock (6)
+1546137156.822091 trying connect
+1546137156.822097 connect failed: No such file or directory
+1546137156.822232 add peer 0x562d24e494d0: 7 ((nil))
+1546137156.822305 sending message 100 to peer 0x562d24e494d0 (4 bytes)
+1546137156.822312 sending message 101 to peer 0x562d24e494d0 (15 bytes)
+1546137156.822315 sending message 102 to peer 0x562d24e494d0 (11 bytes)
+1546137156.822318 sending message 108 to peer 0x562d24e494d0 (21 bytes)
+1546137156.822322 sending message 104 to peer 0x562d24e494d0 (0 bytes)
+1546137156.822326 sending message 107 to peer 0x562d24e494d0 (4 bytes)
+1546137156.822330 sending message 105 to peer 0x562d24e494d0 (1516 bytes)
+1546137156.822338 sending message 105 to peer 0x562d24e494d0 (53 bytes)
+1546137156.822342 sending message 105 to peer 0x562d24e494d0 (34 bytes)
+1546137156.822345 sending message 105 to peer 0x562d24e494d0 (13 bytes)
+1546137156.822348 sending message 105 to peer 0x562d24e494d0 (13 bytes)
+1546137156.822351 sending message 105 to peer 0x562d24e494d0 (52 bytes)
+1546137156.822355 sending message 105 to peer 0x562d24e494d0 (19 bytes)
+1546137156.822358 sending message 105 to peer 0x562d24e494d0 (12 bytes)
+1546137156.822361 sending message 105 to peer 0x562d24e494d0 (25 bytes)
+1546137156.822364 sending message 105 to peer 0x562d24e494d0 (18 bytes)
+1546137156.822367 sending message 105 to peer 0x562d24e494d0 (35 bytes)
+1546137156.822371 sending message 105 to peer 0x562d24e494d0 (65 bytes)
+1546137156.822374 sending message 105 to peer 0x562d24e494d0 (19 bytes)
+1546137156.822377 sending message 105 to peer 0x562d24e494d0 (22 bytes)
+1546137156.822380 sending message 105 to peer 0x562d24e494d0 (20 bytes)
+1546137156.822384 sending message 105 to peer 0x562d24e494d0 (16 bytes)
+1546137156.822387 sending message 105 to peer 0x562d24e494d0 (8 bytes)
+1546137156.822390 sending message 105 to peer 0x562d24e494d0 (15 bytes)
+1546137156.822393 sending message 105 to peer 0x562d24e494d0 (31 bytes)
+1546137156.822397 sending message 105 to peer 0x562d24e494d0 (172 bytes)
+1546137156.822400 sending message 105 to peer 0x562d24e494d0 (145 bytes)
+1546137156.822404 sending message 105 to peer 0x562d24e494d0 (32 bytes)
+1546137156.822407 sending message 105 to peer 0x562d24e494d0 (16 bytes)
+1546137156.822412 sending message 105 to peer 0x562d24e494d0 (16 bytes)
+1546137156.822416 sending message 106 to peer 0x562d24e494d0 (0 bytes)
+1546137156.822419 sending message 200 to peer 0x562d24e494d0 (4 bytes)
+1546137156.822422 client loop enter
+1546137156.833259 peer 0x562d24e494d0 message 207
+1546137156.833267 sending message 208 to peer 0x562d24e494d0 (0 bytes)
+1546137188.117873 peer 0x562d24e494d0 message 203
+1546137188.117881 sending message 205 to peer 0x562d24e494d0 (0 bytes)
+1546137188.118280 peer 0x562d24e494d0 message 204
+1546137188.118285 client loop exit
