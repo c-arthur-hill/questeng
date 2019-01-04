@@ -1,5 +1,8 @@
 html { 
-    font-family: sans-serif; 
+    font-family: sans-serif;
+    background-color: #f8f8f8;
+    color: #111;
+    line-height: 1.5; 
 }
 
 table {
@@ -8,6 +11,7 @@ table {
 
 h1 {
     font-family: "Courier", "Courier New", monospace;
+    color: #000;
 }
 
 .nav > a :visited {
@@ -39,7 +43,7 @@ a.active {
 }
 
 .light-grey-2 {
-    background-color: #f5f5f5;
+    background-color: #dcdcdc;
 }
 
 .logo {

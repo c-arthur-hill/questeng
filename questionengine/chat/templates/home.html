@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block homelink %}active{% endblock %}
-{% block title %}Talk To Ava{% endblock %}
-{% block header %}Talk to me.{%endblock %}
+{% block title %}LongTalking{% endblock %}
+{% block header %}Talk Longer{%endblock %}
 {% block content %}
-<p><i>My name is Ava.<br>I want to be your mentor.<br>I ask you questions.</i></p>
+<p><i>Have conversations you don't want to end.</i></p>
 <table>
 	{% for message in messages %}
 	<tr>
 		{% if message.from_ava %}
-		<th class="light-grey-1">Ava</th>
+		<th class="light-grey-1">Interviewer Bot</th>
 		{% else %}
 		<th class="light-grey-2">You</th>
 		{% endif %}
