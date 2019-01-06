@@ -14,12 +14,22 @@ h1 {
     color: #000;
 }
 
+label {
+    display: block;
+}
+
 .nav > a :visited {
     color: #0000ff;
 }
 
 .nav > a {
     color: #0000ff;
+}
+
+.errorlist {
+    color: red;
+    list-style-position: inside;
+    padding-left: 0;
 }
 
 a.active {

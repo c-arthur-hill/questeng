@@ -2,14 +2,13 @@
 
 {% block homelink %}active{% endblock %}
 {% block title %}LongTalking{% endblock %}
-{% block header %}Talk Longer{%endblock %}
+{% block header %}Have Long Conversations{%endblock %}
 {% block content %}
-<p><i>Have conversations you don't want to end.</i></p>
 <table>
 	{% for message in messages %}
 	<tr>
-		{% if message.from_ava %}
-		<th class="light-grey-1">Interviewer Bot</th>
+		{% if message.from_us %}
+		<th class="light-grey-1">Question</th>
 		{% else %}
 		<th class="light-grey-2">You</th>
 		{% endif %}

@@ -3,6 +3,7 @@ from .forms import MessageForm
 from .models import Conversation, Message
 
 def home(request):
+    context = {}
     if request.method == 'POST':
         form = MessageForm(request.POST)
         if form.is_valid():
@@ -12,12 +13,10 @@ def home(request):
             new_conversation.save()
             new_message.conversation = new_conversation
             new_message.save()
-            return redirect('conversation', conversation_id=new_conversation.id)
+            return redirect('conversation_id', conversation_id=new_conversation.id)
 
     form = MessageForm()
     messages = Message.objects.all()
-    context = {}
-    context['conversation_id'] = new_converastion.id
     context['form'] = form
     context['messages'] = messages
     return render(request, 'home.html', context)
@@ -38,7 +37,7 @@ def conversation(request, conversation_id):
     context['messages'] = messages
     return render(request, 'home.html', context)
 
-def about(request, conversation_id=-1):
+def about(request, conversation_id=None):
     context = {}
     context['conversation_id'] = conversation_id
     return render(request, 'about.html', context)

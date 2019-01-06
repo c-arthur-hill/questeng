@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = [
     'ec2-18-236-121-185.us-west-2.compute.amazonaws.com',
-    'noraclark.com',
-    'www.noraclark.com',
+    'longtalking.com',
+    'www.longtalking.com',
 ]
 
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat',
+    'accounts',
 ]
 
 MIDDLEWARE = [
