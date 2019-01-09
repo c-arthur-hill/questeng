@@ -2,7 +2,7 @@
 
 {% block homelink %}active{% endblock %}
 {% block title %}LongTalking{% endblock %}
-{% block header %}Have Longer Conversations{%endblock %}
+{% block header %}{% if user.is_authenticated %}Hi {{ user.username }}!{% else %}Have Longer Conversations{% endif %}{%endblock %}
 {% block content %}
 {% if not_saved_warning %}
 <div class="not-saved">

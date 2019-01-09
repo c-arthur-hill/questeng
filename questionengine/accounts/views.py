@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from accounts.forms import RegistrationForm
 from django.shortcuts import render, redirect
+from chat.models import Conversation, Message
 
 def register(request, conversation_id=None):
     context = {}
@@ -13,6 +14,10 @@ def register(request, conversation_id=None):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
+            if conversation_id:
+                conversation = Conversation.objects.get(pk=conversation_id)
+                conversation.user = user;
+                conversation.save()
             return redirect('home')
     else:
         form = RegistrationForm()
@@ -30,6 +35,13 @@ def login(request, conversation_id=None):
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
             next_url = request.POST.get('next')
+            previous_conversation = Conversation.objects.get(user=user)
+            if conversation_id and previous_conversation:
+                conversation = Conversation.objects.get(pk=conversation_id)
+                for message in Message.objects.filter(conversation=conversation_id):
+                    message.conversation = previous_conversation
+                previous_conversation.save()
+                conversation.delete()
             if(next_url):
                 return redirect(next_url)
             else:
