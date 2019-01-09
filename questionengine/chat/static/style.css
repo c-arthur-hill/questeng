@@ -3,6 +3,12 @@ html {
     background-color: #f8f8f8;
     color: #111;
     line-height: 1.5; 
+    font-size: 1.25em;
+}
+
+tr, td, input {
+    font-size: 1.25em;
+    padding: 2%;
 }
 
 table {
@@ -18,6 +24,12 @@ label {
     display: block;
 }
 
+ul {
+    list-style-position: inside;
+    padding-left: 0;
+    list-style-type: square;
+}
+
 .nav > a :visited {
     color: #0000ff;
 }
@@ -28,8 +40,12 @@ label {
 
 .errorlist {
     color: red;
-    list-style-position: inside;
-    padding-left: 0;
+}
+
+.not-saved {
+    border: 2px solid red;
+    background: #fff6f6;
+    padding: 0 20px 0 20px;
 }
 
 a.active {

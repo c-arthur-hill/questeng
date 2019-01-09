@@ -25,6 +25,7 @@ urlpatterns = [
     path('register/<int:conversation_id>', register, name='register_id'),
     path('login/', login, name='login'),
     path('login/<int:conversation_id>', login, name='login_id'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', home, name='home'),
     path('conversation/', conversation, name='conversation'),
     path('conversation/<int:conversation_id>', conversation, name='conversation_id'),

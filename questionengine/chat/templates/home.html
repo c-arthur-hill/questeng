@@ -2,8 +2,17 @@
 
 {% block homelink %}active{% endblock %}
 {% block title %}LongTalking{% endblock %}
-{% block header %}Have Long Conversations{%endblock %}
+{% block header %}Have Longer Conversations{%endblock %}
 {% block content %}
+{% if not_saved_warning %}
+<div class="not-saved">
+    <h3>Don't Lose Everything!</h3>
+    <p>
+        <a href="{% url 'register_id' conversation_id %}">Register</a> or <a href="{% url 'login_id' conversation_id %}">Login</a> to save this conversation.
+    </p>
+</div>
+<br>
+{% endif %}
 <table>
 	{% for message in messages %}
 	<tr>

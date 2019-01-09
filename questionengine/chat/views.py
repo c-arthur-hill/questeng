@@ -35,6 +35,7 @@ def conversation(request, conversation_id):
     context['conversation_id'] = conversation_id
     context['form'] = form
     context['messages'] = messages
+    context['not_saved_warning'] = True
     return render(request, 'home.html', context)
 
 def about(request, conversation_id=None):
