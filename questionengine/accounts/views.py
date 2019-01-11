@@ -18,6 +18,10 @@ def register(request, conversation_id=None):
                 conversation = Conversation.objects.get(pk=conversation_id)
                 conversation.user = user;
                 conversation.save()
+            else:
+                conversation = Conversation()
+                conversation.user = user
+                conversation.save()
             return redirect('home')
     else:
         form = RegistrationForm()
@@ -35,13 +39,21 @@ def login(request, conversation_id=None):
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
             next_url = request.POST.get('next')
-            previous_conversation = Conversation.objects.get(user=user)
-            if conversation_id and previous_conversation:
-                conversation = Conversation.objects.get(pk=conversation_id)
-                for message in Message.objects.filter(conversation=conversation_id):
-                    message.conversation = previous_conversation
-                previous_conversation.save()
-                conversation.delete()
+            try:
+                previous_conversation = Conversation.objects.get(user=user)
+            except Conversation.DoesNotExist:
+                previous_conversation = None
+            if conversation_id:
+                if previous_conversation:
+                    conversation = Conversation.objects.get(pk=conversation_id)
+                    for message in Message.objects.filter(conversation=conversation_id):
+                        message.conversation = previous_conversation
+                    previous_conversation.save()
+                    conversation.delete()
+                else:
+                    conversation = Conversation()
+                    conversation.user = user
+                    conversation.save()
             if(next_url):
                 return redirect(next_url)
             else:

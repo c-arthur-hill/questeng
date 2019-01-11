@@ -5,27 +5,27 @@
 		<title>{% block title %}{% endblock %}</title>
 	</head>
 	<body>
-		 <div class="column">
-			<div class="nav">
-				<a class="{% block homelink %}{% endblock %}" 
-	href={% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'home' %}{% endif %}>LongTalking</a>
-				<span> | </span>
-				<a class="{% block aboutlink %}{% endblock %}" 
-	href="{% if conversation_id %}{% url 'about_id' conversation_id %}{% else %}{% url 'about' %}{% endif %}">About</a>
+        <div class="column">
+            <div class="nav">
+                <a class="{% block homelink %}{% endblock %}" 
+    href={% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'home' %}{% endif %}>LongTalking</a>
+                <span> | </span>
+                <a class="{% block aboutlink %}{% endblock %}" 
+    href="{% if conversation_id %}{% url 'about_id' conversation_id %}{% else %}{% url 'about' %}{% endif %}">About</a>
                 {% if not user.is_authenticated %}
                 <span> | </span>
-				<a class="{% block registerLink %}{% endblock %}"
+                <a class="{% block registerLink %}{% endblock %}"
        href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a>
-				<span> | </span>
-				<a class="{% block loginLink %}{% endblock %}"
+                <span> | </span>
+                <a class="{% block loginLink %}{% endblock %}"
        href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a>
                 {% else %}
                 <span> | </span>
                 <a class="{% block logout %}{% endblock %}"
        href="{% url 'logout' %}">Logout</a>
                 {% endif %}
-			</div>
-			<h1>{% block header %}{% endblock %}</h1>
+            </div>
+            <h1 class="h1">{% block header %}{% endblock %}</h1>
 			<div>
 				{% block content %}{% endblock %}
 			</div>

@@ -2,7 +2,6 @@
 
 {% block homelink %}active{% endblock %}
 {% block title %}LongTalking{% endblock %}
-{% block header %}{% if user.is_authenticated %}Hi {{ user.username }}!{% else %}Have Longer Conversations{% endif %}{%endblock %}
 {% block content %}
 {% if not_saved_warning %}
 <div class="not-saved">
@@ -16,12 +15,17 @@
 <table>
 	{% for message in messages %}
 	<tr>
-		{% if message.from_us %}
-		<th class="light-grey-1">Question</th>
+		{% if message.is_user_author %}
+            <td class="tr-background-1">Me</td>
+            <td class="tr-background-1">{{ message.text }}</th>
 		{% else %}
-		<th class="light-grey-2">You</th>
+            <th class="tr-background-2">Calvin</th>
+            {% if message.icebreaker %}
+                <td class="tr-background-2">{{ message.icebreaker.text }}</td>
+            {% else %}
+                <td class="tr-background-2">{{ message.text }}</td>
+            {% endif %}
 		{% endif %}
-		<td>{{ message.message }}</td>
 	</tr>
 	{% endfor %}
 </table>
@@ -29,6 +33,10 @@
 <form action="/" method="post">
 	{% csrf_token %}
 	{{ form }}
+    <div>
+    <br>
 	<input type="submit" value="Submit">
+    <a href="/new/message">Different Message</a>
+    </div>
 </form>
 {% endblock %}
