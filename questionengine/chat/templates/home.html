@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 
 {% block homelink %}active{% endblock %}
-{% block title %}LongTalking{% endblock %}
+{% block title %}YouTalkHere{% endblock %}
+{% block header %}You Talk Here{% endblock %}
 {% block content %}
+<p><i>Practice Talking</i></p>
 {% if not_saved_warning %}
 <div class="not-saved">
-    <h3>Don't Lose Everything!</h3>
+    <h3>This Will Be Lost!</h3>
     <p>
-        <a href="{% url 'register_id' conversation_id %}">Register</a> or <a href="{% url 'login_id' conversation_id %}">Login</a> to save this conversation.
+        <a href="{% url 'register_id' conversation_id %}">Register</a> or <a href="{% url 'login_id' conversation_id %}">Login</a> to save your answers.
     </p>
 </div>
 <br>
@@ -16,10 +18,10 @@
 	{% for message in messages %}
 	<tr>
 		{% if message.is_user_author %}
-            <td class="tr-background-1">Me</td>
+            <th class="tr-background-1">Me</th>
             <td class="tr-background-1">{{ message.text }}</th>
 		{% else %}
-            <th class="tr-background-2">Calvin</th>
+            <th class="tr-background-2">Question</th>
             {% if message.icebreaker %}
                 <td class="tr-background-2">{{ message.icebreaker.text }}</td>
             {% else %}
@@ -30,13 +32,17 @@
 	{% endfor %}
 </table>
 <br>
-<form action="/" method="post">
+<form action="{% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'conversation' %}{% endif %}" method="post">
 	{% csrf_token %}
 	{{ form }}
-    <div>
+    <div class="nav">
     <br>
-	<input type="submit" value="Submit">
-    <a href="/new/message">Different Message</a>
+	<input type="submit" value="Submit Answer">
+    {% if conversation_id or user.is_authenticated %}
+    <a href="{% if conversation_id %}{% url 'different_question_id' conversation_id %}{% else %}{% url 'different_question' %}{% endif %}">Different Question</a>
+    <span> | </span>
+    {% endif %}
+    <a href="{% if conversation_id %}{% url 'different_icebreaker_id' conversation_id %}{% else %}{% url 'different_icebreaker' %}{% endif %}">Different Topic</a>
     </div>
 </form>
 {% endblock %}

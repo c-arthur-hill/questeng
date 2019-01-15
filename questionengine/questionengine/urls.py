@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from chat.views import home, conversation, about
+from chat.views import different_message, new_message, about
 from accounts.views import register, login
 
 urlpatterns = [
@@ -26,9 +26,25 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('login/<int:conversation_id>', login, name='login_id'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('', home, name='home'),
-    path('conversation/', conversation, name='conversation'),
-    path('conversation/<int:conversation_id>', conversation, name='conversation_id'),
+    path('', different_message, {'message_type' : 'icebreaker'}, name='home'),
+    path('conversation/', new_message, name='conversation'),
+    path('conversation/<int:conversation_id>', new_message, name='conversation_id'),
+    path('conversation/different/icebreaker/', 
+        different_message,
+        {'message_type' : 'icebreaker'},
+        name='different_icebreaker'),
+    path('conversation/different/question/',
+        different_message,
+        {'message_type': 'question'},
+        name='different_question'),
+    path('conversation/different/icebreaker/<int:conversation_id>/', 
+        different_message,
+        {'message_type' : 'icebreaker'},
+        name='different_icebreaker_id'),
+    path('conversation/different/question/<int:conversation_id>/',
+        different_message,
+        {'message_type': 'question'},
+        name='different_question_id'),
     path('about/', about, name='about'),    
     path('about/<int:conversation_id>', about, name='about_id'),
 ]
