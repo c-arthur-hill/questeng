@@ -4,7 +4,7 @@
 {% block title %}YouTalkHere{% endblock %}
 {% block header %}You Talk Here{% endblock %}
 {% block content %}
-<p><i>Practice Talking</i></p>
+<p><i>Practice talking</i></p>
 {% if not_saved_warning %}
 <div class="not-saved">
     <h3>This Will Be Lost!</h3>
@@ -37,7 +37,7 @@
 	{{ form }}
     <div class="nav">
     <br>
-	<input type="submit" value="Submit Answer">
+	<input class="submit-button" type="submit" value="ANSWER">
     {% if conversation_id or user.is_authenticated %}
     <a href="{% if conversation_id %}{% url 'different_question_id' conversation_id %}{% else %}{% url 'different_question' %}{% endif %}">Different Question</a>
     <span> | </span>

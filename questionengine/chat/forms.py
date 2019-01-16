@@ -11,5 +11,5 @@ class MessageForm(forms.ModelForm):
             'text': False
         }
         widgets = {
-            'text': forms.TextInput(attrs={'class': 'full-width'})
+            'text': forms.TextInput(attrs={'class': 'full-width', 'autofocus': 'autofocus'})
         }
