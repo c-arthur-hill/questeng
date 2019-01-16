@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = [
     'ec2-18-236-121-185.us-west-2.compute.amazonaws.com',
-    'longtalking.com',
-    'www.longtalking.com',
+    'youtalkhere.com',
+    'www.youtalkhere.com',
 ]
 
 
