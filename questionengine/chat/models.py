@@ -12,12 +12,26 @@ class IceBreakerManager(models.Manager):
         random_index = randint(0, count - 1)
         return self.all()[random_index]
 
+class Topic(models.Model):
+    description = models.CharField(max_length=2047)
+    responded = models.BigIntegerField(default=0)
+
+    @property
+    def top_icebreakers(self):
+        return self.icebreaker_set.all()[:3]
+    def __str__(self):
+        return self.description
+
 class IceBreaker(models.Model):
     text = models.CharField(max_length=2047)
     shown = models.BigIntegerField(default=0)
     swapped = models.BigIntegerField(default=0)
     responded = models.BigIntegerField(default=0)
     objects = IceBreakerManager()
+    topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.text        
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, null=True, blank=True)

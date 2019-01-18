@@ -4,7 +4,7 @@
 {% block title %}YouTalkHere{% endblock %}
 {% block header %}You Talk Here{% endblock %}
 {% block content %}
-<p><i>Practice talking</i></p>
+<p><i>Practice talking about yourself</i></p>
 {% if not_saved_warning %}
 <div class="not-saved">
     <h3>This Will Be Lost!</h3>
@@ -42,7 +42,14 @@
     <a href="{% if conversation_id %}{% url 'different_question_id' conversation_id %}{% else %}{% url 'different_question' %}{% endif %}">Different Question</a>
     <span> | </span>
     {% endif %}
-    <a href="{% if conversation_id %}{% url 'different_icebreaker_id' conversation_id %}{% else %}{% url 'different_icebreaker' %}{% endif %}">Different Topic</a>
+    <a href="{% if conversation_id %}{% url 'different_icebreaker_id' conversation_id %}{% else %}{% url 'different_icebreaker' %}{% endif %}">Random Topic</a>
     </div>
 </form>
+<br>
+{% for topic in topics %}
+    <h3>{{ topic.description }}</h3>
+    {% for icebreaker in topic.top_icebreakers %}
+        <a href="{% url 'icebreaker' icebreaker.id %}">{{ icebreaker.text }}</a><br>
+    {% endfor %}
+{% endfor %}
 {% endblock %}

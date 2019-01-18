@@ -45,6 +45,10 @@ urlpatterns = [
         different_message,
         {'message_type': 'question'},
         name='different_question_id'),
+    path('conversation/icebreaker/<int:icebreaker_id>/',
+        different_message,
+        {'message_type': 'icebreaker'},
+        name='icebreaker'),
     path('about/', about, name='about'),    
     path('about/<int:conversation_id>', about, name='about_id'),
 ]

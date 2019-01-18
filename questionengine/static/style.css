@@ -35,6 +35,7 @@ ul {
 
 a {
     text-decoration: none;
+    color: #1A0DAB;
 }
 
 a:hover {
@@ -42,11 +43,11 @@ a:hover {
 }
 
 .nav > a :visited {
-    color: #0000ff;
+    color: #1A0DAB;
 }
 
 .nav > a {
-    color: #0000ff;
+    color: #1A0DAB;
 }
 
 .errorlist {

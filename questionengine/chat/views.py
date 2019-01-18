@@ -2,10 +2,10 @@ from django.http import HttpResponseNotFound
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from .forms import MessageForm
-from .models import Conversation, IceBreaker, Message
+from .models import Conversation, IceBreaker, Message, Topic
 import re
 
-def different_message(request, message_type, conversation_id=None):
+def different_message(request, message_type, conversation_id=None, icebreaker_id=None):
     # acts as home page
     if request.method == 'GET':
         conversation = get_conversation(request.user, conversation_id)
@@ -14,7 +14,10 @@ def different_message(request, message_type, conversation_id=None):
         message.is_user_author = False
         if message_type == 'icebreaker':
             # message.set_icebreaker()
-            icebreaker = IceBreaker.objects.random()
+            if icebreaker_id:
+                icebreaker = IceBreaker.objects.get(pk=icebreaker_id)
+            else:
+                icebreaker = IceBreaker.objects.random()
             message.is_icebreaker = True
             message.icebreaker = icebreaker
             form.initial['last_icebreaker'] = icebreaker.id
@@ -38,6 +41,7 @@ def different_message(request, message_type, conversation_id=None):
             context['messages'] = messages
         else:
             context['messages'] = [message]
+        context['topics'] = Topic.objects.all()
         return render(request, 'home.html', context)
     else:
         raise PermissionDenied
@@ -92,6 +96,7 @@ def new_message(request, conversation_id=None, icebreaker_id=None, last_Message=
     context['conversation_id'] = conversation_id
     context['form'] = form
     context['messages'] = list(reversed(conversation.message_set.order_by('-id')[:10]))
+    context['topics'] = Topic.objects.all()
     if not request.user.is_authenticated:
         context['not_saved_warning'] = True
     return render(request, 'home.html', context)
