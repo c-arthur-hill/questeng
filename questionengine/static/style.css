@@ -17,6 +17,9 @@ th, td, input, textarea {
     font-size: 1.1em;
     line-height: 1.5;
     padding: .3125em .625em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 table, .full-width {
