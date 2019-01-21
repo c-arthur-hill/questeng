@@ -47,6 +47,7 @@ def different_message(request, message_type, conversation_id=None, question_id=N
             context['messages'] = messages
         else:
             context['messages'] = [message]
+            context['empty_messages'] = True
         context['topics'] = Topic.objects.all()
         context['show_save_message'] = True
         return render(request, 'home.html', context)
