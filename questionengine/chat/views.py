@@ -2,10 +2,10 @@ from django.http import HttpResponseNotFound
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from .forms import MessageForm
-from .models import Conversation, IceBreaker, Message, Topic
+from .models import Conversation, Question, Message, Topic
 import re
 
-def different_message(request, message_type, conversation_id=None, icebreaker_id=None):
+def different_message(request, message_type, conversation_id=None, question_id=None):
     # acts as home page
     if request.method == 'GET':
         conversation = get_conversation(request.user, conversation_id)
@@ -13,14 +13,16 @@ def different_message(request, message_type, conversation_id=None, icebreaker_id
         form = MessageForm()
         message.is_user_author = False
         if message_type == 'icebreaker':
-            # message.set_icebreaker()
-            if icebreaker_id:
-                icebreaker = IceBreaker.objects.get(pk=icebreaker_id)
+            # message.set_question()
+            if question_id:
+                question = Question.objects.get(pk=question_id)
             else:
-                icebreaker = IceBreaker.objects.random()
-            message.is_icebreaker = True
-            message.icebreaker = icebreaker
-            form.initial['last_icebreaker'] = icebreaker.id
+                question = Question.objects.random()
+            if question:
+                message.is_question = True
+                message.is_icebreaker = True
+                message.question = question
+                form.initial['last_question'] = question.id
         elif message_type == 'question':
             # message.set_question()
             if conversation:
@@ -37,16 +39,21 @@ def different_message(request, message_type, conversation_id=None, icebreaker_id
             context['conversation_id'] = conversation.id
             # https://stackoverflow.com/questions/20555673/django-query-get-last-n-records
             messages = list(reversed(conversation.message_set.order_by('-id')[:10]))
+            if not messages:
+                context['empty_messages'] = True
+            else:
+                messages.pop()
             messages.append(message)
             context['messages'] = messages
         else:
             context['messages'] = [message]
         context['topics'] = Topic.objects.all()
+        context['show_save_message'] = True
         return render(request, 'home.html', context)
     else:
         raise PermissionDenied
 
-def new_message(request, conversation_id=None, icebreaker_id=None, last_Message=None):
+def new_message(request, conversation_id=None, question_id=None, last_Message=None):
     # displays message history or posts new response
     # user not logged in & answered first icebreaker
     conversation = get_conversation(request.user, conversation_id)
@@ -71,14 +78,14 @@ def new_message(request, conversation_id=None, icebreaker_id=None, last_Message=
                 last_message.is_user_author = False
                 last_message.save()
             elif form.cleaned_data['last_icebreaker']:
-                last_icebreaker = Message()
+                last_message = Message()
                 try:
-                    icebreaker = IceBreaker.objects.get(pk=form.cleaned_data['last_icebreaker'])
-                    last_icebreaker.icebreaker = icebreaker
-                    last_icebreaker.conversation = conversation
-                    last_icebreaker.is_user_author = False
-                    last_icebreaker.save()
-                except IceBreaker.DoesNotExist:
+                    question = Question.objects.get(pk=form.cleaned_data['last_icebreaker'])
+                    message.question = question
+                    message.conversation = conversation
+                    message.is_user_author = False
+                    message.save()
+                except Question.DoesNotExist:
                     pass
             new_message = form.save(commit=False)
             new_message.conversation = conversation
@@ -97,13 +104,13 @@ def new_message(request, conversation_id=None, icebreaker_id=None, last_Message=
     context['form'] = form
     context['messages'] = list(reversed(conversation.message_set.order_by('-id')[:10]))
     context['topics'] = Topic.objects.all()
-    if not request.user.is_authenticated:
-        context['not_saved_warning'] = True
+    context['show_save_message'] = True
     return render(request, 'home.html', context)
 
 def about(request, conversation_id=None):
     context = {}
     context['conversation_id'] = conversation_id
+    context['show_save_message'] = True
     return render(request, 'about.html', context)
 
 def get_conversation(request_user, conversation_id):

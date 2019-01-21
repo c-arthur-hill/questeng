@@ -45,7 +45,7 @@ urlpatterns = [
         different_message,
         {'message_type': 'question'},
         name='different_question_id'),
-    path('conversation/icebreaker/<int:icebreaker_id>/',
+    path('conversation/icebreaker/<int:question_id>/',
         different_message,
         {'message_type': 'icebreaker'},
         name='icebreaker'),

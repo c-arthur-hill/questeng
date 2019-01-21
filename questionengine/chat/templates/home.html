@@ -5,15 +5,6 @@
 {% block header %}You Talk Here{% endblock %}
 {% block content %}
 <p><i>Find what you want to talk about</i></p>
-{% if not_saved_warning %}
-<div class="not-saved">
-    <h3>This Will Be Lost!</h3>
-    <p>
-        <a href="{% url 'register_id' conversation_id %}">Register</a> or <a href="{% url 'login_id' conversation_id %}">Login</a> to save your answers.
-    </p>
-</div>
-<br>
-{% endif %}
 <table>
 	{% for message in messages %}
 	<tr>
@@ -22,8 +13,8 @@
             <td class="tr-background-1">{{ message.text }}</th>
 		{% else %}
             <th class="tr-background-2">Question</th>
-            {% if message.icebreaker %}
-                <td class="tr-background-2">{{ message.icebreaker.text }}</td>
+            {% if message.question %}
+                <td class="tr-background-2">{{ message.question.text }}</td>
             {% else %}
                 <td class="tr-background-2">{{ message.text }}</td>
             {% endif %}
@@ -38,7 +29,8 @@
     <div class="nav">
     <br>
 	<input class="submit-button" type="submit" value="ANSWER">
-    {% if conversation_id or user.is_authenticated %}
+    {# and has higher precedence than or #}
+    {% if not empty_messages %}
     <a href="{% if conversation_id %}{% url 'different_question_id' conversation_id %}{% else %}{% url 'different_question' %}{% endif %}">Different Question</a>
     <span> | </span>
     {% endif %}
@@ -48,7 +40,7 @@
 <br>
 {% for topic in topics %}
     <h3>{{ topic.description }}</h3>
-    {% for icebreaker in topic.top_icebreakers %}
+    {% for icebreaker in topic.top_questions %}
         <a href="{% url 'icebreaker' icebreaker.id %}">{{ icebreaker.text }}</a><br>
     {% endfor %}
 {% endfor %}

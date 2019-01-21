@@ -5,30 +5,34 @@ from random import randint
 class Conversation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
-class IceBreakerManager(models.Manager):
+class QuestionManager(models.Manager):
     def random(self):
         #https://stackoverflow.com/questions/962619/how-to-pull-a-random-record-using-djangos-orm
-        count = IceBreaker.objects.all().count()
-        random_index = randint(0, count - 1)
-        return self.all()[random_index]
+        count = Question.objects.all().count()
+        if count > 1:
+            random_index = randint(0, count - 1)
+            return self.all()[random_index]
+        else:
+            return None
 
 class Topic(models.Model):
     description = models.CharField(max_length=2047)
     responded = models.BigIntegerField(default=0)
 
     @property
-    def top_icebreakers(self):
-        return self.icebreaker_set.all()[:3]
+    def top_questions(self):
+        return self.question_set.all()[:3]
     def __str__(self):
         return self.description
 
-class IceBreaker(models.Model):
+class Question(models.Model):
     text = models.CharField(max_length=2047)
     shown = models.BigIntegerField(default=0)
     swapped = models.BigIntegerField(default=0)
     responded = models.BigIntegerField(default=0)
-    objects = IceBreakerManager()
+    objects = QuestionManager()
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
+    is_icebreaker = models.BooleanField(default=True)
 
     def __str__(self):
         return self.text        
@@ -38,9 +42,11 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.CharField(max_length=2047)
     is_user_author = models.BooleanField(default=True)
+    is_question = models.BooleanField(default=False)
     is_icebreaker = models.BooleanField(default=False)
     swapped = models.BooleanField(default=False)
-    icebreaker = models.ForeignKey(IceBreaker, on_delete=models.PROTECT, null=True, blank=True)
+    question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True)
+    next_questions = models.ManyToManyField(Question, blank=True, related_name='responded_to')
 
     def __string__():
         return icebreaker;
