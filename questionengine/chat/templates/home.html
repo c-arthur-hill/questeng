@@ -3,14 +3,22 @@
 {% block homelink %}active{% endblock %}
 {% block title %}YouTalkHere{% endblock %}
 {% block header %}You Talk Here{% endblock %}
+{% block subheader %}<p><i>Find what you want to talk about</i></p>{% endblock %}
 {% block content %}
-<p><i>Find what you want to talk about</i></p>
 <table>
+    {% if not user.is_authenticated and show_save_message %}
+    <thead>
+        <tr>
+            <th colspan="2" class="tr-background-2"><a href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a> or <a href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a> to save your answers</th>
+        </tr>
+    </thead>
+    {% endif %}
+    <tbody>
 	{% for message in messages %}
 	<tr>
 		{% if message.is_user_author %}
             <th class="tr-background-1">Me</th>
-            <td class="tr-background-1">{{ message.text }}</th>
+            <td class="tr-background-1">{{ message.text }}</td>
 		{% else %}
             <th class="tr-background-2">Question</th>
             {% if message.question %}
@@ -21,9 +29,10 @@
 		{% endif %}
 	</tr>
 	{% endfor %}
+    </tbody>
 </table>
 <br>
-<form action="{% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'conversation' %}{% endif %}" method="post">
+<form action="{% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'conversation' %}{% endif %}" method="POST">
 	{% csrf_token %}
 	{{ form }}
     <div class="nav">
@@ -31,17 +40,17 @@
 	<input class="submit-button" type="submit" value="ANSWER">
     {# and has higher precedence than or #}
     {% if not empty_messages %}
-    <a href="{% if conversation_id %}{% url 'different_question_id' conversation_id %}{% else %}{% url 'different_question' %}{% endif %}">Different Question</a>
+    <a href="{% if conversation_id %}{% url 'question_id' conversation_id next_question_id %}{% else %}{% url 'question' next_question_id %}{% endif %}">Different Question</a>
     <span> | </span>
     {% endif %}
-    <a href="{% if conversation_id %}{% url 'different_icebreaker_id' conversation_id %}{% else %}{% url 'different_icebreaker' %}{% endif %}">Random Topic</a>
+    <a href="{% if conversation_id %}{% url 'question_id' conversation_id next_question_id %}{% else %}{% url 'question' next_question_id %}{% endif %}">Random Topic</a>
     </div>
 </form>
 <br>
 {% for topic in topics %}
     <h3>{{ topic.description }}</h3>
     {% for icebreaker in topic.top_questions %}
-        <a href="{% url 'icebreaker' icebreaker.id %}">{{ icebreaker.text }}</a><br>
+    <a href="{% if conversation_id %}{% url 'question_id' conversation_id icebreaker.id %}{% else %}{% url 'question' icebreaker.id %}{% endif %}">{{ icebreaker.text }}</a><br>
     {% endfor %}
 {% endfor %}
 {% endblock %}

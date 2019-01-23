@@ -26,6 +26,11 @@ table, .full-width {
     width: 100%;
 }
 
+h3, .h3-height {
+    font-weight: bold;
+    font-size: 1.17em;
+}
+
 label {
     display: block;
 }
@@ -55,12 +60,6 @@ a:hover {
 
 .errorlist {
     color: #FF1744;
-}
-
-.not-saved {
-    border: 2px solid #FF1744;
-    background: #FFEBEE;
-    padding: 0 20px 0 20px;
 }
 
 a.active {

@@ -22,7 +22,7 @@ def register(request, conversation_id=None):
                 conversation = Conversation()
                 conversation.user = user
                 conversation.save()
-            return redirect('home')
+            return redirect('conversation')
     else:
         form = RegistrationForm()
     context['form'] = form
@@ -48,6 +48,7 @@ def login(request, conversation_id=None):
                     conversation = Conversation.objects.get(pk=conversation_id)
                     for message in Message.objects.filter(conversation=conversation_id):
                         message.conversation = previous_conversation
+                        message.save()
                     previous_conversation.save()
                     conversation.delete()
                 else:
@@ -57,7 +58,7 @@ def login(request, conversation_id=None):
             if(next_url):
                 return redirect(next_url)
             else:
-                return redirect('home')
+                return redirect('conversation')
     else:
         form = AuthenticationForm(request.POST)
     context['form'] = form

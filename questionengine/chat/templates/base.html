@@ -19,13 +19,7 @@
                 {% endif %}
             </div>
             <h1 class="h1">{% block header %}{% endblock %}</h1>
-            {% if not user.is_authenticated and show_save_message %}
-            <div class="not-saved">
-                <h3>Your Answers Will Be Lost!</h3>
-                <p><a href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a> or <a href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a> to save your ansswers.</p>
-            </div>
-            <br>
-            {% endif %}
+            {% block subheader %}{% endblock %}
 			<div>
 				{% block content %}{% endblock %}
 			</div>

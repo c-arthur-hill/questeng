@@ -46,7 +46,7 @@ class Message(models.Model):
     is_icebreaker = models.BooleanField(default=False)
     swapped = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True)
-    next_questions = models.ManyToManyField(Question, blank=True, related_name='responded_to')
+    last_question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True, related_name="message_responses")
 
     def __string__():
         return icebreaker;
