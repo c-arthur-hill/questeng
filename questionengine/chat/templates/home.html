@@ -9,7 +9,7 @@
     {% if not user.is_authenticated and show_save_message %}
     <thead>
         <tr>
-            <th colspan="2" class="tr-background-2"><a href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a> or <a href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a> to save your answers</th>
+            <th class="tr-background-2"><a href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a> or <a href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a> to save your answers</th>
         </tr>
     </thead>
     {% endif %}
@@ -17,10 +17,8 @@
 	{% for message in messages %}
 	<tr>
 		{% if message.is_user_author %}
-            <th class="tr-background-1">Me</th>
             <td class="tr-background-1">{{ message.text }}</td>
 		{% else %}
-            <th class="tr-background-2">Question</th>
             {% if message.question %}
                 <td class="tr-background-2">{{ message.question.text }}</td>
             {% else %}

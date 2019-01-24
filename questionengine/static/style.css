@@ -22,6 +22,10 @@ th, td, input, textarea {
     appearance: none;
 }
 
+th {
+    text-align: left;
+}
+
 table, .full-width {
     width: 100%;
 }

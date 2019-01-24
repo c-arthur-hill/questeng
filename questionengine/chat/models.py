@@ -22,6 +22,7 @@ class Topic(models.Model):
     @property
     def top_questions(self):
         return self.question_set.all()[:3]
+
     def __str__(self):
         return self.description
 
@@ -33,6 +34,10 @@ class Question(models.Model):
     objects = QuestionManager()
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
     is_icebreaker = models.BooleanField(default=True)
+
+    @property
+    def top_messages(self):
+        return self.message_responses_set.all()[:3]
 
     def __str__(self):
         return self.text        
