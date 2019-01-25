@@ -16,15 +16,11 @@
     <tbody>
 	{% for message in messages %}
 	<tr>
-		{% if message.is_user_author %}
-            <td class="tr-background-1">{{ message.text }}</td>
-		{% else %}
-            {% if message.question %}
-                <td class="tr-background-2">{{ message.question.text }}</td>
-            {% else %}
-                <td class="tr-background-2">{{ message.answer.text }}</td>
-            {% endif %}
-		{% endif %}
+        {% if message.question %}
+            <td class="tr-background-1">{{ message.question.text }}</td>
+        {% else %}
+            <td class="tr-background-2">{{ message.answer.text }}</td>
+        {% endif %}
 	</tr>
 	{% endfor %}
     </tbody>

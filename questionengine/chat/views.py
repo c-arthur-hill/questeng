@@ -97,7 +97,10 @@ def new_message(request, conversation_id=None, last_Message=None):
                 new_message.answer = answer
             new_message.save()
             next_message = Message()
-            next_message.text = get_next_message('dummy')
+            next_question = Question()
+            next_question.text = get_next_message(new_message.answer.text)
+            next_question.save()
+            next_message.question = next_question
             next_message.conversation = conversation
             next_message.is_user_author = False
             next_message.save()
