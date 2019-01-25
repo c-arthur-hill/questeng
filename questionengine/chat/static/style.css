@@ -17,6 +17,9 @@ th, td, input, textarea {
     font-size: 1.1em;
     line-height: 1.5;
     padding: .3125em .625em;
+}
+
+input[type=text], input[type=submit] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

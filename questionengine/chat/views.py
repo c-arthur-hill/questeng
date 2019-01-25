@@ -1,8 +1,8 @@
 from django.http import HttpResponseNotFound
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.shortcuts import render, redirect
-from .forms import MessageForm
-from .models import Conversation, Question, Message, Topic
+from .forms import AnswerForm, MessageForm
+from .models import Conversation, Question, Answer, QuestionAnswers, Message, Topic
 import re
 
 def different_question(request, question_id=1, conversation_id=None):
@@ -59,9 +59,8 @@ def new_message(request, conversation_id=None, last_Message=None):
         form = MessageForm(request.POST)
         if form.is_valid():
             last_question = None
-            print(1)
+            answer = None
             if form.cleaned_data['last_question']:
-                print(2)
                 try:
                     last_question = Question.objects.get(pk=form.cleaned_data['last_question'])
                     last_message = Message()
@@ -74,13 +73,31 @@ def new_message(request, conversation_id=None, last_Message=None):
                     last_message.save()
                 except Question.DoesNotExist:
                     pass
+            else:
+                try:
+                    last_question = conversation.message_set.last().question
+                except Question.DoesNotExist:
+                    pass
+            if form.cleaned_data['text']:
+                answer_form = AnswerForm({'text': form.cleaned_data['text']})
+                if answer_form.is_valid():
+                    answer = answer_form.save()
+                    if last_question:
+                        QuestionAnswers.objects.create(question=last_question, answer=answer, responded=1)
+                        
+                    answer.save()
+                else:
+                    # I need to return a response here for 
+                    # filled out text and chose answer
+                    return SuspiciousOperation() 
             new_message = form.save(commit=False)
             new_message.conversation = conversation
             # implicite None
-            new_message.last_question = last_question
+            if answer:
+                new_message.answer = answer
             new_message.save()
             next_message = Message()
-            next_message.text = get_next_message(new_message.text)
+            next_message.text = get_next_message('dummy')
             next_message.conversation = conversation
             next_message.is_user_author = False
             next_message.save()

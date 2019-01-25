@@ -29,7 +29,6 @@ class Topic(models.Model):
 class Question(models.Model):
     text = models.CharField(max_length=2047)
     shown = models.BigIntegerField(default=0)
-    swapped = models.BigIntegerField(default=0)
     responded = models.BigIntegerField(default=0)
     objects = QuestionManager()
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
@@ -42,16 +41,28 @@ class Question(models.Model):
     def __str__(self):
         return self.text        
 
+class Answer(models.Model):
+    text = models.CharField(max_length=2047)
+    questions = models.ManyToManyField(Question, through='QuestionAnswers')
+
+    def __str__(self):
+        return self.text
+
+class QuestionAnswers(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    shown = models.BigIntegerField(default=0)
+    responded = models.BigIntegerField(default=0)
+
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    text = models.CharField(max_length=2047)
     is_user_author = models.BooleanField(default=True)
     is_question = models.BooleanField(default=False)
     is_icebreaker = models.BooleanField(default=False)
     swapped = models.BooleanField(default=False)
+    answer = models.ForeignKey(Answer, on_delete=models.PROTECT, null=True, blank=True)
     question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True)
-    last_question = models.ForeignKey(Question, on_delete=models.PROTECT, null=True, blank=True, related_name="message_responses")
 
     def __string__():
         return icebreaker;
