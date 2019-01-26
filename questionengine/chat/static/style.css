@@ -33,6 +33,11 @@ table, .full-width {
     width: 100%;
 }
 
+table {
+    border-spacing: 2px;
+    border-color: #FAFAFA;
+}
+
 h3, .h3-height {
     font-weight: bold;
     font-size: 1.17em;
@@ -87,6 +92,10 @@ a.active {
 
 .tr-background-2 {
     background-color: #CFD8DC;
+}
+
+.background-border {
+    border: 2px solid #FAFAFA;
 }
 
 .submit-button {

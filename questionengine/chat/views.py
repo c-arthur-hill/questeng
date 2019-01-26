@@ -15,7 +15,7 @@ def different_question(request, question_id=1, conversation_id=None):
         # can return none
         conversation = get_conversation(request.user, conversation_id)
         message = Message()
-        form = MessageForm()
+        form = MessageForm(last_question=question)
         form['last_question'].initial = question.id
         message.is_user_author = False
         message.is_question = True
@@ -49,7 +49,7 @@ def new_message(request, conversation_id=None, last_Message=None):
     # user not logged in & answered first icebreaker
     conversation = get_conversation(request.user, conversation_id)
     if request.method == 'GET':
-        form = MessageForm()
+        form = MessageForm(last_question=conversation.objects.last().question)
     elif request.method == 'POST':
         if not conversation:
             # user not logged in, but posted first response
@@ -104,7 +104,7 @@ def new_message(request, conversation_id=None, last_Message=None):
             next_message.conversation = conversation
             next_message.is_user_author = False
             next_message.save()
-            form = MessageForm()
+            form = MessageForm(last_question=next_question)
     else:
         return HttpResponseForbidden()
     

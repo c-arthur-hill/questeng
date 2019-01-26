@@ -35,8 +35,8 @@ class Question(models.Model):
     is_icebreaker = models.BooleanField(default=True)
 
     @property
-    def top_messages(self):
-        return self.message_responses_set.all()[:3]
+    def top_answers(self):
+        return self.answer_set.all()[:3]
 
     def __str__(self):
         return self.text        
