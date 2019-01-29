@@ -18,6 +18,10 @@ class QuestionManager(models.Manager):
         else:
             return None
 
+class AnswerManager(models.Manager):
+    def to_question(self, question):
+        return self.filter(questions__in=[question.id])
+
 class Topic(models.Model):
     description = models.CharField(max_length=2047)
     responded = models.BigIntegerField(default=0)
@@ -37,9 +41,11 @@ class Question(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
     is_icebreaker = models.BooleanField(default=True)
 
-    @property
     def top_answers(self):
         return self.answer_set.all()[:3]
+
+    def are_top_answers(self):
+        return self.answer_set.count() > 0
 
     def __str__(self):
         return self.text        
@@ -47,6 +53,7 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.CharField(max_length=2047)
     questions = models.ManyToManyField(Question, through='QuestionAnswers')
+    objects = AnswerManager()
 
     def __str__(self):
         return self.text

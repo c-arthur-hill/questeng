@@ -1,5 +1,5 @@
 from django import forms
-from .models import Answer, Message
+from .models import Answer, Question, Message
 
 class MessageForm(forms.ModelForm):
     last_question = forms.IntegerField(required=False, widget=forms.HiddenInput())
@@ -10,10 +10,17 @@ class MessageForm(forms.ModelForm):
         fields = ['answer']
 
     def __init__(self, *args, **kwargs):
-        last_question = kwargs.pop('last_question', None)
+        # clean in view and pass in
+        question_id = kwargs.pop('question_id', None)
         super(MessageForm, self).__init__(*args, **kwargs)
-        if last_question and last_question.top_answers:
-            self.fields['answer'].queryset=last_question.top_answers
+        self.fields['last_question'].initial=question_id
+        try:
+            question = Question.objects.get(pk=question_id)
+        except Question.DoesNotExist:
+            return
+        if question.are_top_answers():
+            # might want to pass in user in future
+            self.fields['answer'].queryset=Answer.objects.to_question(question)
         else:
             self.fields['answer'].queryset=Answer.objects.none()
             self.fields['answer'].widget=forms.HiddenInput()

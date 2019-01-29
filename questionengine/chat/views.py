@@ -15,8 +15,7 @@ def different_question(request, question_id=1, conversation_id=None):
         # can return none
         conversation = get_conversation(request.user, conversation_id)
         message = Message()
-        form = MessageForm(last_question=question)
-        form['last_question'].initial = question.id
+        form = MessageForm(question_id=question.id)
         message.is_user_author = False
         message.is_question = True
         message.is_icebreaker = question.is_icebreaker
@@ -57,7 +56,7 @@ def new_message(request, conversation_id=None, last_Message=None):
                 last_question = last_question_message.question
         else:
             last_question = None
-        form = MessageForm(last_question=last_question)
+        form = MessageForm(question_id=last_question.id)
     elif request.method == 'POST':
         if not conversation:
             # user not logged in, but posted first response
@@ -65,7 +64,8 @@ def new_message(request, conversation_id=None, last_Message=None):
             conversation.save()
             conversation_id = conversation.id
             issue_redirect = True
-        form = MessageForm(request.POST)
+        # kind of a hack
+        form = MessageForm(request.POST, question_id=request.POST.get('last_question', None))
         if form.is_valid():
             last_question = None
             answer = None
@@ -114,7 +114,7 @@ def new_message(request, conversation_id=None, last_Message=None):
             next_message.is_question = True
             next_message.is_user_author = False
             next_message.save()
-            form = MessageForm(last_question=next_question)
+            form = MessageForm(question_id=next_question.id)
     else:
         return HttpResponseForbidden()
     if issue_redirect:
