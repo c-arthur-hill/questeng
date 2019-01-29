@@ -25,7 +25,7 @@
     </tbody>
 </table>
 <form action="{% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'conversation' %}{% endif %}" method="POST">
-    <div class="tr-background-1 background-border"
+    <div class="tr-background-1 background-border">
 	{% csrf_token %}
 	{{ form.last_question }}
     {% for answer_input in form.answer reversed %}

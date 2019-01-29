@@ -12,7 +12,13 @@ class MessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         last_question = kwargs.pop('last_question', None)
         super(MessageForm, self).__init__(*args, **kwargs)
-        self.fields['answer'].queryset=last_question.top_answers
+        if last_question and last_question.top_answers:
+            self.fields['answer'].queryset=last_question.top_answers
+        else:
+            self.fields['answer'].queryset=Answer.objects.none()
+            self.fields['answer'].widget=forms.HiddenInput()
+            self.fields['answer'].required=False
+            self.fields['text'].required=True
         
 
 class AnswerForm(forms.ModelForm):

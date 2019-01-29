@@ -5,6 +5,9 @@ from random import randint
 class Conversation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
+    def last_question(self):
+        return self.message_set.filter(is_question=True).last()
+
 class QuestionManager(models.Manager):
     def random(self):
         #https://stackoverflow.com/questions/962619/how-to-pull-a-random-record-using-djangos-orm

@@ -47,15 +47,24 @@ def different_question(request, question_id=1, conversation_id=None):
 def new_message(request, conversation_id=None, last_Message=None):
     # displays message history or posts new response
     # user not logged in & answered first icebreaker
+    issue_redirect = False
+    last_question = None
     conversation = get_conversation(request.user, conversation_id)
     if request.method == 'GET':
-        form = MessageForm(last_question=conversation.objects.last().question)
+        if conversation:
+            last_question_message = conversation.last_question()
+            if last_question_message:
+                last_question = last_question_message.question
+        else:
+            last_question = None
+        form = MessageForm(last_question=last_question)
     elif request.method == 'POST':
         if not conversation:
             # user not logged in, but posted first response
             conversation = Conversation()
             conversation.save()
             conversation_id = conversation.id
+            issue_redirect = True
         form = MessageForm(request.POST)
         if form.is_valid():
             last_question = None
@@ -102,16 +111,19 @@ def new_message(request, conversation_id=None, last_Message=None):
             next_question.save()
             next_message.question = next_question
             next_message.conversation = conversation
+            next_message.is_question = True
             next_message.is_user_author = False
             next_message.save()
             form = MessageForm(last_question=next_question)
     else:
         return HttpResponseForbidden()
-    
+    if issue_redirect:
+        return redirect('conversation_id', conversation_id=conversation_id)
     context = {}
     context['conversation_id'] = conversation_id
     context['form'] = form
-    context['messages'] = list(reversed(conversation.message_set.order_by('-id')[:5]))
+    if conversation:
+        context['messages'] = list(reversed(conversation.message_set.order_by('-id')[:5]))
     context['topics'] = Topic.objects.all()
     context['show_save_message'] = True
     context['next_question_id'] = 1
