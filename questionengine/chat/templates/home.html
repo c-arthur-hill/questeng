@@ -28,9 +28,10 @@
     <div class="tr-background-1 background-border">
 	{% csrf_token %}
 	{{ form.last_question }}
-    {% for answer_input in form.answer|slice:":4" reversed %}
+    {% for answer_input in form.answer|slice:"1:4" %}
         {{ answer_input }}
     {% endfor %}
+    {{ form.answer|first }}
     {{ form.text }}
     </div>
     <div class="nav">

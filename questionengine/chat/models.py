@@ -20,7 +20,7 @@ class QuestionManager(models.Manager):
 
 class AnswerManager(models.Manager):
     def to_question(self, question):
-        return self.filter(questions__in=[question.id])
+        return self.filter(questions__in=[question.id]).order_by('-questionanswers')
 
 class Topic(models.Model):
     description = models.CharField(max_length=2047)
@@ -41,9 +41,6 @@ class Question(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
     is_icebreaker = models.BooleanField(default=True)
 
-    def top_answers(self):
-        return self.answer_set.all()[:3]
-
     def are_top_answers(self):
         return self.answer_set.count() > 0
 
@@ -63,6 +60,9 @@ class QuestionAnswers(models.Model):
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     shown = models.BigIntegerField(default=0)
     responded = models.BigIntegerField(default=0)
+
+    class Meta:
+        ordering = ('responded',)
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, null=True, blank=True)

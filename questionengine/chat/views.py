@@ -99,11 +99,14 @@ def new_message(request, conversation_id=None, last_Message=None):
                     # I need to return a response here for 
                     # filled out text and chose answer
                     return SuspiciousOperation() 
-            new_message = form.save(commit=False)
-            new_message.conversation = conversation
-            # implicite None
-            if answer:
-                new_message.answer = answer
+            else:
+                new_message = form.save(commit=False)
+                answer = new_message.answer
+                new_message.conversation = conversation
+                if last_question:
+                    question_answer = QuestionAnswers.objects.get(question=last_question, answer=new_message.answer)
+                    question_answer.responded = question_answer.responded + 1
+                    question_answer.save()
             new_message.save()
             next_message = Message()
             next_question = Question()
