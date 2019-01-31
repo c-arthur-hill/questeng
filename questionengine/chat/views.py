@@ -1,15 +1,23 @@
 from django.http import HttpResponseNotFound
 from django.core.exceptions import PermissionDenied, SuspiciousOperation
 from django.shortcuts import render, redirect
+from django.db.models import F
 from .forms import AnswerForm, MessageForm
 from .models import Conversation, Question, Answer, QuestionAnswers, Message, Topic
 import re
+import random
 
-def different_question(request, question_id=1, conversation_id=None):
+def different_question(request, question_id=0, conversation_id=None):
     # acts as home page
     if request.method == 'GET':
         try:
-            question = Question.objects.get(pk=question_id)
+            if question_id == 0:
+                question = Question.objects.order_by((F('responded')*-1.0) / F('shown')).first()
+                keep_chance = (question.responded * 100) / question.shown
+                if keep_chance < random.randint(0, 100):
+                    question = Question.objects.random()
+            else:
+                question = Question.objects.get(pk=question_id)
         except Question.DoesNotExist:
             return HttpResponseNotFound()
         # can return none
@@ -87,6 +95,9 @@ def new_message(request, conversation_id=None, last_Message=None):
                     last_question = conversation.message_set.last().question
                 except Question.DoesNotExist:
                     pass
+            last_question.responded += last_question.responded
+            last_question.shown += last_question.shown
+            last_question.save()
             if form.cleaned_data['text']:
                 answer_form = AnswerForm({'text': form.cleaned_data['text']})
                 if answer_form.is_valid():

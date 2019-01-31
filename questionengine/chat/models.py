@@ -35,7 +35,7 @@ class Topic(models.Model):
 
 class Question(models.Model):
     text = models.CharField(max_length=2047)
-    shown = models.BigIntegerField(default=0)
+    shown = models.BigIntegerField(default=1)
     responded = models.BigIntegerField(default=0)
     objects = QuestionManager()
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
