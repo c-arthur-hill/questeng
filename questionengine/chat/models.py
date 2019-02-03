@@ -8,6 +8,9 @@ class Conversation(models.Model):
     def last_question(self):
         return self.message_set.filter(is_question=True).last()
 
+    def last_answer(self):
+        return self.message_set.filter(is_question=False).last()
+
 class QuestionManager(models.Manager):
     def random(self):
         #https://stackoverflow.com/questions/962619/how-to-pull-a-random-record-using-djangos-orm

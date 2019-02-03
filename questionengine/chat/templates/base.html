@@ -16,7 +16,12 @@
                 {% if user.is_authenticated %}
                     <span> | </span>
                     <a class="{% block logout %}{% endblock %}" href="{% url 'logout' %}">Logout</a>
-                {% endif %}
+                {% else %}
+                    <span> | </span>
+                    <a href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a>
+                    <span> | </span>
+                    <a href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a>
+    {% endif %}
             </div>
             <h1 class="h1">{% block header %}{% endblock %}</h1>
             {% block subheader %}{% endblock %}

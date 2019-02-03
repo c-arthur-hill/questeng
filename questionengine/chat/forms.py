@@ -32,3 +32,9 @@ class AnswerForm(forms.ModelForm):
     class Meta:
         model = Answer
         fields = ['text']
+
+    def __init__(self, *args, **kwargs):
+        placeholder = kwargs.pop('placeholder', False)
+        super(AnswerForm, self).__init__(*args, **kwargs)
+        if placeholder:
+            self.fields['text'].widget = forms.TextInput(attrs={'placeholder': placeholder, 'class': 'full-width', 'autofocus': 'autofocus'})

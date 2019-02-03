@@ -51,7 +51,15 @@ def different_question(request, question_id=0, conversation_id=None):
     else:
         raise PermissionDenied
 
-def new_message(request, conversation_id=None, last_Message=None):
+def create_conversation(request):
+    if request.method == 'GET':
+        context = {}
+        context['form'] = AnswerForm(placeholder='Type something weird')
+        context['show_topics'] = False
+        context['topics'] = Topic.objects.all()
+        return render(request, 'home.html', context)
+
+def new_message(request, conversation_id=None, last_message=None, show_topics=False):
     # displays message history or posts new response
     # user not logged in & answered first icebreaker
     issue_redirect = False
@@ -59,11 +67,9 @@ def new_message(request, conversation_id=None, last_Message=None):
     conversation = get_conversation(request.user, conversation_id)
     if request.method == 'GET':
         if conversation:
-            last_question_message = conversation.last_question()
-            if last_question_message:
-                last_question = last_question_message.question
+            last_question = conversation.last_question()
         else:
-            last_question = None
+            raise PermissionDenied
         form = MessageForm(question_id=last_question.id)
     elif request.method == 'POST':
         if not conversation:
@@ -105,7 +111,9 @@ def new_message(request, conversation_id=None, last_Message=None):
                     if last_question:
                         QuestionAnswers.objects.create(question=last_question, answer=answer, responded=1)
                         
-                    answer.save()
+                    new_message = Message()
+                    new_message.conversation = conversation
+                    new_message.answer = answer
                 else:
                     # I need to return a response here for 
                     # filled out text and chose answer
@@ -119,20 +127,16 @@ def new_message(request, conversation_id=None, last_Message=None):
                     question_answer.responded = question_answer.responded + 1
                     question_answer.save()
             new_message.save()
-            next_message = Message()
+            
+            if issue_redirect:
+                return redirect('conversation_id', conversation_id=conversation_id)
+
             next_question = Question()
             next_question.text = get_next_message(new_message.answer.text)
             next_question.save()
-            next_message.question = next_question
-            next_message.conversation = conversation
-            next_message.is_question = True
-            next_message.is_user_author = False
-            next_message.save()
             form = MessageForm(question_id=next_question.id)
     else:
         return HttpResponseForbidden()
-    if issue_redirect:
-        return redirect('conversation_id', conversation_id=conversation_id)
     context = {}
     context['conversation_id'] = conversation_id
     context['form'] = form

@@ -6,7 +6,7 @@ body {
     color: #111;
     line-height: 1.5; 
     font-size: 1.1em;
-    background-color: #FAFAFA;
+    background: linear-gradient(45deg, #FFFFFF, #FAFAFA);
 }
 
 th, td, input, textarea {
@@ -25,17 +25,8 @@ input[type=text], input[type=submit] {
     appearance: none;
 }
 
-th {
-    text-align: left;
-}
-
-table, .full-width {
+.full-width {
     width: 100%;
-}
-
-table {
-    border-spacing: 2px;
-    border-color: #FAFAFA;
 }
 
 h3, .h3-height {
@@ -86,16 +77,12 @@ a.active {
     max-width: 480px;
 }
 
-.tr-background-1 {
+.background-1 {
     background-color: #ECEFF1;
 }
 
-.tr-background-2 {
-    background-color: #CFD8DC;
-}
-
-.background-border {
-    border: 2px solid #FAFAFA;
+.padding-10 {
+    padding: .625em;
 }
 
 .submit-button {
