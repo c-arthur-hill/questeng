@@ -45,6 +45,7 @@ def different_question(request, question_id=0, conversation_id=None):
         else:
             context['messages'] = [message]
             context['empty_messages'] = True
+        context['header'] = question
         context['topics'] = Topic.objects.all()
         context['show_save_message'] = True
         return render(request, 'home.html', context)
@@ -57,7 +58,31 @@ def create_conversation(request):
         context['form'] = AnswerForm(placeholder='Type something weird')
         context['show_topics'] = False
         context['topics'] = Topic.objects.all()
+        context['header'] = 'Talk Weird'
         return render(request, 'home.html', context)
+    if request.method == 'POST':
+        answer = AnswerForm(request.POST)
+        answer.save()
+        conversation = Conversation()
+        if request.user.is_authenticated():
+            conversation.user = request.user()
+        conversation.save()
+        message = Message()
+        message.conversation = conversation
+        message.is_user_auth = True
+        message.answer = answer
+        message.save()
+        # eventually check fo similar existing questions
+        question = Question()
+        question.text = get_next_question(answer.text)
+        question.conversation = conversation
+        question.is_user_auth = False
+        question.save()
+        next_message = Message()
+        next_message.conversation = conversation
+        next_message.question = question
+        next_message.save()
+        return redirect('conversation_id', conversation_id=conversation_id)
 
 def new_message(request, conversation_id=None, last_message=None, show_topics=False):
     # displays message history or posts new response

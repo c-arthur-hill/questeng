@@ -6,7 +6,6 @@ body {
     color: #111;
     line-height: 1.5; 
     font-size: 1.1em;
-    background: linear-gradient(45deg, #FFFFFF, #FAFAFA);
 }
 
 th, td, input, textarea {
@@ -27,6 +26,10 @@ input[type=text], input[type=submit] {
 
 .full-width {
     width: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
 }
 
 h3, .h3-height {
@@ -68,7 +71,6 @@ a:hover {
 a.active {
     color: #000000;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .column {
@@ -78,11 +80,19 @@ a.active {
 }
 
 .background-1 {
-    background-color: #ECEFF1;
+    background-color: #FAFAFA;
+}
+
+.background-2 {
+    background-color: #F5F5F5;
 }
 
 .padding-10 {
     padding: .625em;
+}
+
+.padding-5-bottom {
+    padding-bottom: .3125em;
 }
 
 .submit-button {
@@ -92,4 +102,8 @@ a.active {
     box-shadow: 2px 2px 2px #000000;
     margin-right: 4px;
     font-weight: bold;
+}
+
+.highlight {
+    background-color: #FFFF8D;
 }
