@@ -62,9 +62,9 @@ def create_conversation(request):
         return render(request, 'home.html', context)
     if request.method == 'POST':
         answer = AnswerForm(request.POST)
-        answer.save()
+        answer = answer.save()
         conversation = Conversation()
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             conversation.user = request.user()
         conversation.save()
         message = Message()
@@ -81,8 +81,9 @@ def create_conversation(request):
         next_message = Message()
         next_message.conversation = conversation
         next_message.question = question
+        next_message.is_question = True
         next_message.save()
-        return redirect('conversation_id', conversation_id=conversation_id)
+        return redirect('conversation_id', conversation_id=conversation.id)
 
 def new_message(request, conversation_id=None, last_message=None, show_topics=False):
     # displays message history or posts new response
@@ -92,10 +93,10 @@ def new_message(request, conversation_id=None, last_message=None, show_topics=Fa
     conversation = get_conversation(request.user, conversation_id)
     if request.method == 'GET':
         if conversation:
-            last_question = conversation.last_question()
+            last_question_message = conversation.last_question()
         else:
             raise PermissionDenied
-        form = MessageForm(question_id=last_question.id)
+        form = MessageForm(question_id=last_question_message.id)
     elif request.method == 'POST':
         if not conversation:
             # user not logged in, but posted first response
@@ -157,7 +158,7 @@ def new_message(request, conversation_id=None, last_message=None, show_topics=Fa
                 return redirect('conversation_id', conversation_id=conversation_id)
 
             next_question = Question()
-            next_question.text = get_next_message(new_message.answer.text)
+            next_question.text = get_next_question(new_message.answer.text)
             next_question.save()
             form = MessageForm(question_id=next_question.id)
     else:
@@ -165,12 +166,10 @@ def new_message(request, conversation_id=None, last_message=None, show_topics=Fa
     context = {}
     context['conversation_id'] = conversation_id
     context['form'] = form
-    if conversation:
-        context['messages'] = list(reversed(conversation.message_set.order_by('-id')[:5]))
     context['topics'] = Topic.objects.all()
-    context['show_save_message'] = True
+    context['header'] = last_question_message.question.text
     context['next_question_id'] = 1
-    return render(request, 'home.html', context)
+    return render(request, 'talk.html', context)
 
 def about(request, conversation_id=None):
     context = {}
@@ -192,7 +191,7 @@ def get_conversation(request_user, conversation_id):
             pass
     return conversation
 
-def get_next_message(current_message):
+def get_next_question(current_message):
     return 'What is ' + strip_punctuation(current_message.split(' ')[-1]) + '?'
 
 def strip_punctuation(s):

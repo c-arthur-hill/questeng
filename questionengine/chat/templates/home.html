@@ -4,38 +4,24 @@
 {% block title %}TalkWeird{% endblock %}
 {% block header %}{{ header }}{% endblock %}
 {% block content %}
-<form action="{% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'conversation' %}{% endif %}" method="POST">
+<form action="{% url 'home' %}" method="POST">
     {% csrf_token %}
-    {{ form.last_question }}
-    <div class="padding-5-bottom">
-        {% for answer_input in form.answer|slice:"1:4" %}
-            {{ answer_input }}
-        {% endfor %}
-        {{ form.answer|first }}
-    </div>
     {{ form.text }}
     <div class="nav">
         <br>
         <input class="submit-button" type="submit" value="TALK">
-        {# and has higher precedence than or #}
-        {% if messages|length > 1 %}
-        <a href="{% if conversation_id %}{% url 'question_id' conversation_id next_question_id %}{% else %}{% url 'question' next_question_id %}{% endif %}">Different Question</a>
-        <span> | </span>
-        {% endif %}
     </div>
 </form>
 <br>
-{% if topics %}
-    <div class="background-2 overflow-hidden padding-10">
-        <h2>Other Topics</h2>
-    </div>
-    <div class="background-1 padding-10">
-        {% for topic in topics %}
-            <h3>{{ topic.description }}</h3>
-            {% for icebreaker in topic.top_questions %}
-            <a href="{% if conversation_id %}{% url 'question_id' conversation_id icebreaker.id %}{% else %}{% url 'question' icebreaker.id %}{% endif %}">{{ icebreaker.text }}</a><br>
-            {% endfor %}
+<div class="background-2 overflow-hidden padding-10">
+    <h2>Topics</h2>
+</div>
+<div class="background-1 padding-10">
+    {% for topic in topics %}
+        <h3>{{ topic.description }}</h3>
+        {% for icebreaker in topic.top_questions %}
+        <a href="{% if conversation_id %}{% url 'question_id' conversation_id icebreaker.id %}{% else %}{% url 'question' icebreaker.id %}{% endif %}">{{ icebreaker.text }}</a><br>
         {% endfor %}
-    </div>
-{% endif %}
+    {% endfor %}
+</div>
 {% endblock %}
