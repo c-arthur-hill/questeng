@@ -2,7 +2,10 @@ from django import forms
 from .models import Answer, Question, Message
 
 class MessageForm(forms.ModelForm):
+    # the last skipped question
     last_question = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    # the current quesiton to respond to
+    question = forms.IntegerField(required=False, widget=forms.HiddenInput())
     text = forms.CharField(label=False, required=False, max_length=240, widget=forms.TextInput(attrs={'class': 'full-width', 'autofocus': 'autofocus'}))
     answer = forms.ModelChoiceField(None, label=False, empty_label='Other', widget=forms.RadioSelect)
     class Meta:
@@ -13,7 +16,7 @@ class MessageForm(forms.ModelForm):
         # clean in view and pass in
         question_id = kwargs.pop('question_id', None)
         super(MessageForm, self).__init__(*args, **kwargs)
-        self.fields['last_question'].initial=question_id
+        self.fields['question'].initial=question_id
         try:
             question = Question.objects.get(pk=question_id)
         except Question.DoesNotExist:
