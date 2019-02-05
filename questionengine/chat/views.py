@@ -8,7 +8,6 @@ import re
 import random
 
 def different_question(request, question_id=0, conversation_id=None):
-    # acts as home page
     if request.method == 'GET':
         try:
             if question_id == 0:
@@ -52,6 +51,70 @@ def different_question(request, question_id=0, conversation_id=None):
     else:
         raise PermissionDenied
 
+def create_conversation_from_different_question(request, question_id):
+    # no conversation, no last_question
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise HttpResponseNotFound
+    context = {}
+    if request.method == 'GET':
+        form = MessageForm(question_id=question_id)
+    if request.method == 'POST':
+        # here question_id should match last_question
+        # later on it might be different
+        form = MessageForm(request.POST, question_id=question_id)
+        if form.is_valid():
+            conversation = Conversation()
+            if request.user.is_authenticated:
+                conversation.user = request.user()
+            conversation.save()
+
+            # save question they responded to
+            question_message = Message()
+            question_message.is_question = True
+            question_message.question = question
+            question_message.conversation = conversation
+            question_message.save()
+
+            # save their answer
+            if form.cleaned_data['text']:
+                answer_form = AnswerForm({'text': form.cleaned_data['text']})
+                if answer_form.is_valid():
+                    answer = answer_form.save()
+                    new_message = Message()
+                    new_message.conversation = conversation
+                    new_message.answer = answer
+                    new_message.save()
+                else:
+                    # need to add validation error to answer 2 long
+                    context['form'] = form
+                    return render(request, 'talk.html', context)
+
+            else:
+                new_message = form.save(commit=False)
+                new_message.conversation = conversation
+                new_message.save()
+                question_answer = QuestionAnswers.objects.get(question=question, answer=new_message.answer)
+                question_answer.responded += 1
+                question_answer.save()
+
+            # generate next question
+            next_question = Question()
+            next_question.text = get_next_question(new_message.answer.text)
+            next_question.save()
+            next_question_message = Message()
+            next_question_message.conversation = conversation
+            next_question_message.question = next_question
+            next_question_message.is_question = True
+            next_question_message.save()
+            return redirect('conversation_id', conversation_id=conversation.id)
+    
+    context['form'] = form
+    context['question'] = question
+    context['similar'] = Question.objects.similar(question)
+    return render(request, 'create_conversation_from_different_question.html', context)
+
 def create_conversation(request):
     if request.method == 'GET':
         context = {}
@@ -85,6 +148,7 @@ def create_conversation(request):
         next_message.save()
         return redirect('conversation_id', conversation_id=conversation.id)
 
+# refactor to use question id
 def new_message(request, conversation_id=None, last_message=None, show_topics=False):
     # displays message history or posts new response
     # user not logged in & answered first icebreaker

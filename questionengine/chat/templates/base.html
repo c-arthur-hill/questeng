@@ -21,7 +21,7 @@
                     <a class="highlight {% block registerlink %}{% endblock %}" href="{% if conversation_id %}{% url 'register_id' conversation_id %}{% else %}{% url 'register' %}{% endif %}">Register</a>
                     <span> | </span>
                     <a class="highlight {% block loginlink %}{% endblock %}" href="{% if conversation_id %}{% url 'login_id' conversation_id %}{% else %}{% url 'login' %}{% endif %}">Login</a>
-    {% endif %}
+                {% endif %}
             </div>
             <h1>{% block header %}{% endblock %}</h1>
 			<div>

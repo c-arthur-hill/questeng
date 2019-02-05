@@ -20,7 +20,7 @@
     {% for topic in topics %}
         <h3>{{ topic.description }}</h3>
         {% for icebreaker in topic.top_questions %}
-        <a href="{% if conversation_id %}{% url 'question_id' conversation_id icebreaker.id %}{% else %}{% url 'question' icebreaker.id %}{% endif %}">{{ icebreaker.text }}</a><br>
+        <a href="{% url 'create_conversation_from_different_question' icebreaker.id %}">{{ icebreaker.text }}</a><br>
         {% endfor %}
     {% endfor %}
 </div>

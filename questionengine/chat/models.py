@@ -21,6 +21,12 @@ class QuestionManager(models.Manager):
         else:
             return None
 
+    def similar(self, question):
+        # could use improvements
+        # filter previously responded
+        # matrix correlate
+        return Question.objects.exclude(topic__isnull=True)
+
 class AnswerManager(models.Manager):
     def to_question(self, question):
         return self.filter(questions__in=[question.id]).order_by('-questionanswers')

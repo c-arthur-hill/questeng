@@ -91,6 +91,10 @@ a.active {
     padding: .625em;
 }
 
+.padding-10-5 {
+    padding: .625em .3125em;
+}
+
 .padding-5-bottom {
     padding-bottom: .3125em;
 }
@@ -105,5 +109,5 @@ a.active {
 }
 
 .highlight {
-    background-color: #FFFF8D;
+    background: #FFFF8D80;
 }

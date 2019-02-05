@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from chat.views import different_question, new_message, about, create_conversation
+from chat.views import different_question, new_message, about, create_conversation, create_conversation_from_different_question
 from accounts.views import register, login
 
 urlpatterns = [
@@ -27,12 +27,13 @@ urlpatterns = [
     path('login/<int:conversation_id>', login, name='login_id'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('', create_conversation, name='home'),
-    path('conversation/', new_message, name='conversation'),
-    path('conversation/<int:conversation_id>', new_message, name='conversation_id'),
-    path('conversation/question/<int:question_id>/', 
+    path('talk/from/<int:question_id>', create_conversation_from_different_question, name='create_conversation_from_different_question'),
+    path('talk/', new_message, name='conversation'),
+    path('talk/<int:conversation_id>', new_message, name='conversation_id'),
+    path('talk/question/<int:question_id>/', 
         different_question,
         name='question'),
-    path('conversation/<int:conversation_id>/question/<int:question_id>/',
+    path('talk/<int:conversation_id>/question/<int:question_id>/',
         different_question,
         name='question_id'),
     path('about/', about, name='about'),    
