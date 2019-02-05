@@ -7,7 +7,7 @@ class MessageForm(forms.ModelForm):
     # the current quesiton to respond to
     question = forms.IntegerField(required=False, widget=forms.HiddenInput())
     text = forms.CharField(label=False, required=False, max_length=240, widget=forms.TextInput(attrs={'class': 'full-width', 'autofocus': 'autofocus'}))
-    answer = forms.ModelChoiceField(None, label=False, empty_label='Other', widget=forms.RadioSelect)
+    answer = forms.ModelChoiceField(None, required=False, label=False, empty_label='Other', widget=forms.RadioSelect)
     class Meta:
         model = Message
         fields = ['answer']

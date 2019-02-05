@@ -58,6 +58,8 @@ def create_conversation_from_different_question(request, question_id):
     except Question.DoesNotExist:
         raise HttpResponseNotFound
     context = {}
+    context['question'] = question
+    context['similar'] = Question.objects.similar(question)
     if request.method == 'GET':
         form = MessageForm(question_id=question_id)
     if request.method == 'POST':
@@ -65,6 +67,10 @@ def create_conversation_from_different_question(request, question_id):
         # later on it might be different
         form = MessageForm(request.POST, question_id=question_id)
         if form.is_valid():
+            if not form.cleaned_data['text'] and not form.cleaned_data['answer']:
+                form.add_error(None, "Say something!")
+                context['form'] = form
+                return render(request, 'create_conversation_from_different_question.html', context)
             conversation = Conversation()
             if request.user.is_authenticated:
                 conversation.user = request.user()
@@ -78,26 +84,23 @@ def create_conversation_from_different_question(request, question_id):
             question_message.save()
 
             # save their answer
+            new_message = form.save(commit=False)
+            new_message.conversation = conversation
+
             if form.cleaned_data['text']:
                 answer_form = AnswerForm({'text': form.cleaned_data['text']})
                 if answer_form.is_valid():
                     answer = answer_form.save()
-                    new_message = Message()
-                    new_message.conversation = conversation
                     new_message.answer = answer
-                    new_message.save()
                 else:
                     # need to add validation error to answer 2 long
                     context['form'] = form
                     return render(request, 'talk.html', context)
-
-            else:
-                new_message = form.save(commit=False)
-                new_message.conversation = conversation
-                new_message.save()
+            elif form.cleaned_data['answer']:
                 question_answer = QuestionAnswers.objects.get(question=question, answer=new_message.answer)
                 question_answer.responded += 1
                 question_answer.save()
+            new_message.save()
 
             # generate next question
             next_question = Question()
@@ -109,10 +112,8 @@ def create_conversation_from_different_question(request, question_id):
             next_question_message.is_question = True
             next_question_message.save()
             return redirect('conversation_id', conversation_id=conversation.id)
-    
+    print(form.errors)    
     context['form'] = form
-    context['question'] = question
-    context['similar'] = Question.objects.similar(question)
     return render(request, 'create_conversation_from_different_question.html', context)
 
 def create_conversation(request):
