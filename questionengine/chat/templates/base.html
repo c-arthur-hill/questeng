@@ -9,7 +9,7 @@
         <div class="column">
             <div class="nav">
                 <a class="{% block homelink %}{% endblock %}" 
-    href={% if conversation_id %}{% url 'conversation_id' conversation_id %}{% else %}{% url 'home' %}{% endif %}>TalkWeird</a>
+                   href={% if question %}{% if conversation_id %}{% url 'conversation_id' conversation_id=conversation_id question_id=question.id %}{% else %}{% url 'conversation' question.id %}{% endif %}{% else %}{% url 'home' %}{% endif %}>TalkWeird</a>
                 <span> | </span>
                 <a class="{% block aboutlink %}{% endblock %}" 
     href="{% if conversation_id %}{% url 'about_id' conversation_id %}{% else %}{% url 'about' %}{% endif %}">About</a>

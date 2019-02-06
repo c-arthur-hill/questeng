@@ -7,50 +7,6 @@ from .models import Conversation, Question, Answer, QuestionAnswers, Message, To
 import re
 import random
 
-def different_question(request, question_id=0, conversation_id=None):
-    if request.method == 'GET':
-        try:
-            if question_id == 0:
-                question = Question.objects.order_by((F('responded')*-1.0) / F('shown')).first()
-                keep_chance = (question.responded * 100) / question.shown
-                if keep_chance < random.randint(0, 100):
-                    question = Question.objects.random()
-            else:
-                question = Question.objects.get(pk=question_id)
-        except Question.DoesNotExist:
-            return HttpResponseNotFound()
-        # can return none
-        conversation = get_conversation(request.user, conversation_id)
-        message = Message()
-        form = MessageForm(question_id=question.id)
-        message.is_user_author = False
-        message.is_question = True
-        message.is_icebreaker = question.is_icebreaker
-        message.question = question
-        context = {}
-        context['different_message'] = message
-        context['form'] = form
-        context['next_question_id'] = question_id + 1
-        if conversation:
-            context['conversation_id'] = conversation.id
-            # https://stackoverflow.com/questions/20555673/django-query-get-last-n-records
-            messages = list(reversed(conversation.message_set.order_by('-id')[:5]))
-            if not messages:
-                context['empty_messages'] = True
-            else:
-                messages.pop()
-            messages.append(message)
-            context['messages'] = messages
-        else:
-            context['messages'] = [message]
-            context['empty_messages'] = True
-        context['header'] = question
-        context['topics'] = Topic.objects.all()
-        context['show_save_message'] = True
-        return render(request, 'home.html', context)
-    else:
-        raise PermissionDenied
-
 def create_conversation_from_different_question(request, question_id):
     # no conversation, no last_question
     try:
@@ -112,7 +68,6 @@ def create_conversation_from_different_question(request, question_id):
             next_question_message.is_question = True
             next_question_message.save()
             return redirect('conversation_id', conversation_id=conversation.id)
-    print(form.errors)    
     context['form'] = form
     return render(request, 'create_conversation_from_different_question.html', context)
 
@@ -129,7 +84,7 @@ def create_conversation(request):
         answer = answer.save()
         conversation = Conversation()
         if request.user.is_authenticated:
-            conversation.user = request.user()
+            conversation.user = request.user
         conversation.save()
         message = Message()
         message.conversation = conversation
@@ -147,93 +102,95 @@ def create_conversation(request):
         next_message.question = question
         next_message.is_question = True
         next_message.save()
-        return redirect('conversation_id', conversation_id=conversation.id)
+        return redirect('conversation_id', question_id=question.id, conversation_id=conversation.id)
 
-# refactor to use question id
-def new_message(request, conversation_id=None, last_message=None, show_topics=False):
-    # displays message history or posts new response
-    # user not logged in & answered first icebreaker
-    issue_redirect = False
-    last_question = None
+def new_message(request, question_id, conversation_id=None, show_topics=False):
     conversation = get_conversation(request.user, conversation_id)
+    if not conversation:
+        return redirect(request, 'login')
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise HttpResponseNotFound
+
+    context = {}
+    context['conversation_id'] = conversation_id
+    if show_topics:
+        context['topics'] = Topic.objects.all()
+    else:
+        context['similar'] = Question.objects.similar(question)
+    context['question'] = question
+
     if request.method == 'GET':
-        if conversation:
-            last_question_message = conversation.last_question()
-        else:
-            raise PermissionDenied
-        form = MessageForm(question_id=last_question_message.id)
+        form = MessageForm(question_id=question.id)
     elif request.method == 'POST':
-        if not conversation:
-            # user not logged in, but posted first response
-            conversation = Conversation()
-            conversation.save()
-            conversation_id = conversation.id
-            issue_redirect = True
-        # kind of a hack
-        form = MessageForm(request.POST, question_id=request.POST.get('last_question', None))
+        form = MessageForm(request.POST, question_id=question.id)
         if form.is_valid():
-            last_question = None
-            answer = None
-            if form.cleaned_data['last_question']:
-                try:
-                    last_question = Question.objects.get(pk=form.cleaned_data['last_question'])
-                    last_message = Message()
-                    last_message.question = last_question
-                    last_message.conversation = conversation
-                    last_message.is_question = True
-                    last_message.is_icebreaker = last_question.is_icebreaker
-                    last_message.reponded = True
-                    last_message.is_user_author = False
-                    last_message.save()
-                except Question.DoesNotExist:
-                    pass
-            else:
-                try:
-                    last_question = conversation.message_set.last().question
-                except Question.DoesNotExist:
-                    pass
-            last_question.responded += last_question.responded
-            last_question.shown += last_question.shown
-            last_question.save()
+            # create new message but don't save to return validation errors
             if form.cleaned_data['text']:
                 answer_form = AnswerForm({'text': form.cleaned_data['text']})
                 if answer_form.is_valid():
                     answer = answer_form.save()
-                    if last_question:
-                        QuestionAnswers.objects.create(question=last_question, answer=answer, responded=1)
-                        
                     new_message = Message()
                     new_message.conversation = conversation
                     new_message.answer = answer
                 else:
-                    # I need to return a response here for 
-                    # filled out text and chose answer
-                    return SuspiciousOperation() 
+                    for error in answer_form.errors():
+                        form.add_error('text', error)
+                    context['form'] = form
+                    return render(request, 'talk.html', context) 
             else:
                 new_message = form.save(commit=False)
                 answer = new_message.answer
                 new_message.conversation = conversation
-                if last_question:
-                    question_answer = QuestionAnswers.objects.get(question=last_question, answer=new_message.answer)
-                    question_answer.responded = question_answer.responded + 1
-                    question_answer.save()
-            new_message.save()
             
-            if issue_redirect:
-                return redirect('conversation_id', conversation_id=conversation_id)
+            # check if last question was skipped
+            last_question_message = conversation.last_question()
+            last_question = last_question_message.question
+            if last_question == question:
+                last_question.responded += 1
+            else:
+                last_question_message.skipped = True
+                last_question.skipped += 1
+                try:
+                    last_question_answer, created = QuestionAnswers.objects.get_or_create(question=last_question, answer=answer)
+                    last_question_answer.skipped += 1
+                except QuestionAnswers.DoesNotExist:
+                    pass
+               
+               # save question they just answered as msg
+                question_message = Message()
+                question_message.conversation = conversation
+                question_message.is_question = True
+                question_message.question = question
+                question_message.save()
 
+            # this was already persisted, it should be an update
+            last_question.save() 
+
+            # had to delay for ordering
+            new_message.save()
+
+            # updating tracking on new answer to this question
+            question_answer, created = QuestionAnswers.objects.get_or_create(question=question, answer=new_message.answer)
+            question_answer.responded += 1
+            question_answer.save()
+
+            # create and save next question
+            # eventually I'll want to check for dupes
             next_question = Question()
             next_question.text = get_next_question(new_message.answer.text)
             next_question.save()
-            form = MessageForm(question_id=next_question.id)
+            next_question_message = Message()
+            next_question_message.is_question = True
+            next_question_message.conversation = conversation
+            next_question_message.question = next_question
+            next_question_message.save()
+            return redirect('conversation_id', question_id=next_question.id, conversation_id=conversation.id)
     else:
         return HttpResponseForbidden()
-    context = {}
-    context['conversation_id'] = conversation_id
+    
     context['form'] = form
-    context['topics'] = Topic.objects.all()
-    context['header'] = last_question_message.question.text
-    context['next_question_id'] = 1
     return render(request, 'talk.html', context)
 
 def about(request, conversation_id=None):

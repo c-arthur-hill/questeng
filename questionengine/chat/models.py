@@ -44,8 +44,8 @@ class Topic(models.Model):
 
 class Question(models.Model):
     text = models.CharField(max_length=2047)
-    shown = models.BigIntegerField(default=1)
     responded = models.BigIntegerField(default=0)
+    skipped = models.BigIntegerField(default=0)
     objects = QuestionManager()
     topic = models.ForeignKey(Topic, on_delete=models.PROTECT, null=True, blank=True)
     is_icebreaker = models.BooleanField(default=True)
@@ -67,7 +67,7 @@ class Answer(models.Model):
 class QuestionAnswers(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    shown = models.BigIntegerField(default=0)
+    skipped = models.BigIntegerField(default=0)
     responded = models.BigIntegerField(default=0)
 
     class Meta:
