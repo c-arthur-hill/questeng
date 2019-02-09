@@ -5,7 +5,7 @@ body {
             sans-serif;
     color: #111;
     line-height: 1.5; 
-    margin: 8px 0 0 0;
+    margin: 8px 0 0 0
 }
 
 input[type=text], input[type=password], input[type=email], input[type=submit] {
@@ -23,6 +23,10 @@ ul {
     list-style-position: inside;
     padding-left: 0;
     list-style-type: square;
+}
+
+li {
+    margin-bottom: .625em;
 }
 
 a {
