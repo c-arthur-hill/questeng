@@ -5,7 +5,7 @@ body {
             sans-serif;
     color: #111;
     line-height: 1.5; 
-    margin: 8px 0 0 0;
+    margin: 8px 0 0 0
 }
 
 input[type=text], input[type=password], input[type=email], input[type=submit] {
@@ -23,6 +23,10 @@ ul {
     list-style-position: inside;
     padding-left: 0;
     list-style-type: square;
+}
+
+li {
+    margin-bottom: .625em;
 }
 
 a {
@@ -123,17 +127,23 @@ a.active {
     border-bottom: 2px solid #9E9E9E;
 }
 
+.background-F5F5F5 {
+    background: linear-gradient(45deg, #FFFFFF, #F5F5F5);
+}
+
 .background-E0E0E0 {
-    background: linear-gradient(45deg, #E0E0E0, #FFFFFF);
+    background: linear-gradient(45deg, #FFFFFF, #E0E0E0);
 }
 
 .third-column {
-    width: 33.33%;
+    width: 32.33%;
+    margin-right: 1%;
     float: left;
 }
 
 .column {
-    width: 18.750em;
+    width: 100%;
+    max-width: 30.00em;
     margin: 0 auto;
 }
 
@@ -143,7 +153,8 @@ a.active {
 
 @media only screen and (max-width: 900px) {
     .third-column {
-        width: 50%;
+        width: 49%;
+        margin-right: 1%;
     }
 
     .third-first-hidden {
