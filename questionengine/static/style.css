@@ -8,10 +8,15 @@ body {
     margin: 8px 0 0 0;
 }
 
-input[type=text], input[type=submit] {
+input[type=text], input[type=password], input[type=email], input[type=submit] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    line-height: 1.5;
+    color: #111;
+    font-size: 1.1em;
+    padding: .3125em;
+
 }
 
 ul {
@@ -40,6 +45,11 @@ h2, h3, .nav > a.active {
 label, .block {
     display: block;
 }
+
+label, .bold {
+    font-weight: bold;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -52,7 +62,7 @@ a:hover {
     color: #1A0DAB;
 }
 
-.full-width {
+input[type=text], input[type=password], input[type=email], .full-width {
     width: 100%;
 }
 
@@ -87,6 +97,10 @@ a.active {
 
 .background-0d-gradient {
     background: linear-gradient(225deg, #ECEFF1, #FFFFFF);
+}
+
+.background-1a {
+    background: #37474F;
 }
 
 .padding-10 {
@@ -126,7 +140,11 @@ a.active {
 }
 
 .margin-middle {
-    margin: 0 auto;
+    margin: auto 0;
+}
+
+.margin-zero {
+    margin: 0;
 }
 
 .light-bottom-border {
@@ -135,8 +153,12 @@ a.active {
 
 .third-column {
     width: 33.33%;
-    margin: 0;
     float: left;
+}
+
+.column {
+    width: 18.750em;
+    margin: 0 auto;
 }
 
 .clear-both {
