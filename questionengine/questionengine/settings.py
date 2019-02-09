@@ -22,8 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = [
     'ec2-18-236-121-185.us-west-2.compute.amazonaws.com',
-    'talkweird.com',
-    'www.talkweird.com',
+    'howareyouweird.com',
+    'www.howareyouweird.com',
 ]
 
 
@@ -109,4 +109,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
+LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = '/login'

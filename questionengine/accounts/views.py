@@ -13,12 +13,15 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             auth_login(request, user)
+        else:
+            context['next'] = request.POST.get('next')
     else:
         form = RegistrationForm()
+        context['next'] = request.GET.get('next')
     context['form'] = form
     return render(request, 'register.html', context)
 
-def login(request, conversation_id=None):
+def login(request):
     context = {}
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -30,7 +33,11 @@ def login(request, conversation_id=None):
             next_url = request.POST.get('next')
             if(next_url):
                 return redirect(next_url)
+        else:
+            context['next'] = request.POST.get('next')
     else:
         form = AuthenticationForm(request.POST)
+        context['next'] = request.GET.get('next')
     context['form'] = form
+    
     return render(request, 'login.html', context)
