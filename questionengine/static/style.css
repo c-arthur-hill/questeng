@@ -34,12 +34,8 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Georgia, Times, Times New Roman, serif";
 }
 
-h1 {
-    color: #FFFFFF;
-}
-
 h2, h3, .nav > a.active {
-    color: #263238;
+    color: #212121;
 }
 
 label, .block {
@@ -77,30 +73,6 @@ input[type=text], input[type=password], input[type=email], .full-width {
 a.active {
     text-decoration: none;
     font-weight: bold;
-}
-
-.background-0a {
-    background: #263238;
-}
-
-.background-0b {
-    background: #B0BEC5;
-}
-
-.background-0c {
-    background: #CFD8DC;
-}
-
-.background-0d {
-    background: #ECEFF1;
-}
-
-.background-0d-gradient {
-    background: linear-gradient(225deg, #ECEFF1, #FFFFFF);
-}
-
-.background-1a {
-    background: #37474F;
 }
 
 .padding-10 {
@@ -148,7 +120,11 @@ a.active {
 }
 
 .light-bottom-border {
-    border-bottom: 2px solid #EEEEEE;
+    border-bottom: 2px solid #9E9E9E;
+}
+
+.background-E0E0E0 {
+    background: linear-gradient(45deg, #E0E0E0, #FFFFFF);
 }
 
 .third-column {
@@ -164,3 +140,24 @@ a.active {
 .clear-both {
     clear: both;
 }
+
+@media only screen and (max-width: 900px) {
+    .third-column {
+        width: 50%;
+    }
+
+    .third-first-hidden {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .third-column{
+        width: 100%;
+    }
+
+    .third-second-hidden {
+        display: none;
+    }
+}
+

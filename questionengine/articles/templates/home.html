@@ -4,54 +4,52 @@
 {% block title %}HowAreYouWeird{% endblock %}
 {% block header %}How Are You Weird?{% endblock %}
 {% block content %}
-<div class="background-1a full-width overflow-hidden">
-    <p class="align-center background-1a">
+<div class="full-width overflow-hidden">
+    <p class="align-center">
     <a class="submit-button" href="{% url 'create_article' %}">Tell Me</a>
     </p>
 </div>
-<div class="background-0b full-width overflow-hidden">
-    <h2 class="align-center">Table of Contents</h2>
-</div>
-<div>
-        <div class="third-column margin-zero background-0d-gradient">
-            <ol>
-            {% for topic in topics %}
-                <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            </ol>
-        </div><div class="third-column margin-zero background-0d-gradient">
-            <ol>
-            {% for topic in topics %}
-                <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            </ol>
-        </div><div class="third-column margin-zero background-0d-gradient">
-            <ol>
-            {% for topic in topics %}
-                <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            <ol>
-        </div>
+<div class="full-width overflow-hidden background-E0E0E0">
+    <h2 class="align-center light-bottom-border">Table of Contents</h2>
+    <div class="third-column margin-zero">
+        <ol>
+        {% for topic in topics %}
+            <li><a href="">I'm a nerd</a></li>
+        {% endfor %}
+        </ol>
+    </div><div class="third-column third-second-hidden margin-zero">
+        <ol>
+        {% for topic in topics %}
+            <li><a href="">I'm a nerd</a></li>
+        {% endfor %}
+        </ol>
+    </div><div class="third-column third-first-hidden margin-zero">
+        <ol>
+        {% for topic in topics %}
+            <li><a href="">I'm a nerd</a></li>
+        {% endfor %}
+        <ol>
+    </div>
 </div>
 {% for topic in topics %}
 <br>
 <div class="background-0c ninety-eight-width overflow-hidden clear-both">
-    <h3 class="align-center">I'm a nerd</h3>
+    <h3 class="align-center light-bottom-border">I'm a nerd</h3>
 </div>
 <div>
-    <div class="third-column margin-zero background-0d-gradient">
+    <div class="third-column margin-zero">
             <ol>
             {% for topic in topics %}
                 <li><a href="">I'm a nerd</a></li>
             {% endfor %}
             </ol>
-        </div><div class="third-column margin-zero background-0d-gradient">
+        </div><div class="third-column third-second-hidden margin-zero">
             <ol>
             {% for topic in topics %}
             <li><a href="">I'm a nerd</a></li>
             {% endfor %}
             </ol>
-        </div><div class="third-column margin-zero background-0d-gradient">
+        </div><div class="third-column third-first-hidden margin-zero">
             <ol>
             {% for topic in topics %}
                 <li><a href="">I'm a nerd</a></li>
