@@ -5,40 +5,13 @@ body {
             sans-serif;
     color: #111;
     line-height: 1.5; 
-    font-size: 1.1em;
-}
-
-th, td, input, textarea {
-    font-family: -apple-system, BlinkMacSystemFont,
-    “Segoe UI”, “Roboto”, “Oxygen”, “Ubuntu”, “Cantarell”,
-        “Fira Sans”, “Droid Sans”, “Helvetica Neue”,
-            sans-serif;
-    font-size: 1.1em;
-    line-height: 1.5;
-    padding: .3125em .625em;
+    margin: 8px 0 0 0;
 }
 
 input[type=text], input[type=submit] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-}
-
-.full-width {
-    width: 100%;
-}
-
-.overflow-hidden {
-    overflow: hidden;
-}
-
-h3, .h3-height {
-    font-weight: bold;
-    font-size: 1.17em;
-}
-
-label {
-    display: block;
 }
 
 ul {
@@ -52,6 +25,21 @@ a {
     color: #1A0DAB;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Georgia, Times, Times New Roman, serif";
+}
+
+h1 {
+    color: #FFFFFF;
+}
+
+h2, h3, .nav > a.active {
+    color: #263238;
+}
+
+label, .block {
+    display: block;
+}
 a:hover {
     text-decoration: underline;
 }
@@ -64,50 +52,93 @@ a:hover {
     color: #1A0DAB;
 }
 
+.full-width {
+    width: 100%;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
 .errorlist {
     color: #FF1744;
 }
 
 a.active {
-    color: #000000;
     text-decoration: none;
+    font-weight: bold;
 }
 
-.column {
-    margin: 0 auto;
-    padding: 0 1% 0 1%;
-    max-width: 480px;
+.background-0a {
+    background: #263238;
 }
 
-.background-1 {
-    background-color: #FAFAFA;
+.background-0b {
+    background: #B0BEC5;
 }
 
-.background-2 {
-    background-color: #F5F5F5;
+.background-0c {
+    background: #CFD8DC;
+}
+
+.background-0d {
+    background: #ECEFF1;
+}
+
+.background-0d-gradient {
+    background: linear-gradient(225deg, #ECEFF1, #FFFFFF);
 }
 
 .padding-10 {
     padding: .625em;
 }
 
+.padding-5, .submit-button {
+    padding: .3125em;
+}
+
 .padding-10-5 {
     padding: .625em .3125em;
 }
 
-.padding-5-bottom {
-    padding-bottom: .3125em;
-}
-
 .submit-button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    font-size: 1.25em;
     background-color: #FF1744;
     border-color: #B71C1C;
     color: #FFFFFF;
     box-shadow: 2px 2px 2px #000000;
-    margin-right: 4px;
     font-weight: bold;
+}
+
+.submit-button:hover {
+    text-decoration: none;
 }
 
 .highlight {
     background: #FFFF8D80;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.margin-middle {
+    margin: 0 auto;
+}
+
+.light-bottom-border {
+    border-bottom: 2px solid #EEEEEE;
+}
+
+.third-column {
+    width: 33.33%;
+    margin: 0;
+    float: left;
+}
+
+.clear-both {
+    clear: both;
 }
