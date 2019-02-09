@@ -1,0 +1,37 @@
+<html>
+	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		{% load static %}
+		<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <link rel="shortcut icon" href="/static/favicon.ico">
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body class="background-0d">
+        <div class="nav full-width align-center">
+            <a class="{% block homelink %}{% endblock %}" 
+               href="{% url 'home' %}">HowAreYouWeird</a>
+            <span> | </span>
+            <a class="{% block aboutlink %}{% endblock %}" 
+href="{% url 'about' %}">About</a>
+            {% if user.is_authenticated %}
+                <span> | </span>
+                <a class="{% block logout %}{% endblock %}" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <span> | </span>
+                <a class="highlight {% block registerlink %}{% endblock %}" href="{% url 'register' %}">Register</a>
+                <span> | </span>
+                <a class="highlight {% block loginlink %}{% endblock %}" href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+        <br>
+        <div class="background-0a overflow-hidden align-center full-width">
+            <h1>{% block header %}{% endblock %}</h1>
+        </div>
+        {% block content %}{% endblock %}
+        <div class="footer">
+            {% block footer %}{% endblock %}
+        </div>
+		</div>
+	</body>
+</html>
+

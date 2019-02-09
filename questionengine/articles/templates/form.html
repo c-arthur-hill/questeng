@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block homelink %}active{% endblock %}
+{% block title %}HowAreYouWeird{% endblock %}
+{% block header %}{{ header }}{% endblock %}
+{% block content %}
+<div class="background-0c full-width overflow-hidden">
+    <h3 class="align-center">{{ subheader }}</h3>
+</div>
+<div class="column">
+    <br>
+    {% if form %}
+    <form action="{% if article %}{% url pathname article.id %}{% else %}{% url pathname %}{% endif %}" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br><br>
+        <input type="submit" value="{{ submit_value }}">
+    </form>
+    {% elif choose_article_part_type %}
+    <a href="{% url 'create_subheader' article.id %}">Add subheader</a><br>
+    <a href="{% url 'create_paragraph' article.id %}">Add paragraph</a><br>
+    {% endif %}
+</div>
+{%endblock %}
