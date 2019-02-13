@@ -127,6 +127,10 @@ a.active {
     border-bottom: 2px solid #E0E0E0;
 }
 
+.color-616161 {
+    color: #616161;
+}
+
 .background-F5F5F5 {
     background: linear-gradient(45deg, #FFFFFF, #F5F5F5);
 }
