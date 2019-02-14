@@ -62,7 +62,7 @@ a:hover {
     color: #1A0DAB;
 }
 
-input[type=text], input[type=password], input[type=email], .full-width {
+.full-width {
     width: 100%;
 }
 

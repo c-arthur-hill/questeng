@@ -6,7 +6,7 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['topic', 'header']
         labels = {
-                'header': 'Article title'
+                'header': 'How Are You Weird?'
                 }
 
 class TopicForm(forms.ModelForm):

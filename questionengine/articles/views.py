@@ -2,17 +2,36 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, TopicForm, ParagraphForm, SubHeaderForm
-from .models import Article
+from .models import Article, Topic
 
 def home(request):
     context = {}
-    context['topics'] = [None] * 5
+    topics = Topic.objects.all()
+    topics_len = len(topics)
+    topics_len_third_modulo = topics_len % 3
+    topics_len_third = int(topics_len / 3)
+    topics_start_second = topics_len_third
+    topics_start_third = 2 * topics_len_third
+
+    print(topics_len_third_modulo)
+    if topics_len_third_modulo >= 1:
+        topics_start_second += 1
+        topics_start_third += 1
+    if topics_len_third_modulo == 2:
+        # carryover + extra
+        topics_start_third += 1
+
+    context['topics'] = topics
+    context['topics_first'] = topics[:topics_start_second]
+    context['topics_second'] = topics[topics_start_second:topics_start_third]
+    context['topics_third'] = topics[topics_start_third:]
+    context['topics_start_second'] = topics_start_second + 1
+    context['topics_start_third'] = topics_start_third + 1
     return render(request, 'home.html', context)
 
 def about(request):
     return render(request, 'about.html')
 
-@login_required()
 def create_article(request):
     context = {}
     form = None
@@ -27,13 +46,13 @@ def create_article(request):
             return redirect('choose_article_part_type', article_id=article.id)
     else:
         returnHttpResponseForbidden()
+    context['header'] = 'Tell Me'
     context['form'] = form
     context['pathname'] = 'create_article'
     context['submit_value'] = 'Next'
     return render(request, 'form.html', context)
 
 
-@login_required()
 def choose_article_part_type(request, article_id):
     context = {}
     article = get_article(request, article_id)
@@ -41,7 +60,6 @@ def choose_article_part_type(request, article_id):
     context['article'] = article
     return render(request, 'form.html', context)
 
-@login_required()
 def create_paragraph(request, article_id):
     context = {}
     article = get_article(request, article_id)
@@ -65,7 +83,6 @@ def create_paragraph(request, article_id):
     context['article'] = article
     return render(request, 'form.html', context)
 
-@login_required()
 def create_subheader(request, article_id):
     context = {}
     article = get_article(request, article_id)
