@@ -131,6 +131,14 @@ a.active {
     color: #616161;
 }
 
+.color-FFF {
+    color: #FFF;
+}
+
+.background-111 {
+    background: #111;
+}
+
 .background-F5F5F5 {
     background: linear-gradient(45deg, #FFFFFF, #F5F5F5);
 }
