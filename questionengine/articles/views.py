@@ -21,7 +21,7 @@ def home(request):
         # carryover + extra
         topics_start_third += 1
 
-    context['topics'] = topics
+    context['articles'] = topics
     context['topics_first'] = topics[:topics_start_second]
     context['topics_second'] = topics[topics_start_second:topics_start_third]
     context['topics_third'] = topics[topics_start_third:]
@@ -142,3 +142,5 @@ def get_article(request, article_id):
     except Article.DoesNotExist:
         raise HttpResponseNotFound()
 
+def article(request):
+    return render(request, 'article.html')

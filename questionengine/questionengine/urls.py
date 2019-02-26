@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path
-from articles.views import about, home, create_article, choose_article_part_type, create_paragraph, create_subheader, create_topic
+from articles.views import about, home, article, create_article, choose_article_part_type, create_paragraph, create_subheader, create_topic
 from accounts.views import register, login
 
 urlpatterns = [
@@ -27,6 +27,7 @@ urlpatterns = [
     path('', home, name='home'),
     path('about', about, name='about'),
     path('topic/create', create_topic, name='create_topic'),
+    path('article', article, name='article'),
     path('article/create', create_article, name='create_article'),
     path('article/<int:article_id>/topic/create', create_topic, name='create_topic_id'),
     path('article/<int:article_id>/subheader/create', create_subheader, name='create_subheader'),

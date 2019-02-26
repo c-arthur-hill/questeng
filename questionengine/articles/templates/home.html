@@ -4,59 +4,20 @@
 {% block title %}DeathFear{% endblock %}
 {% block header %}DeathFear{% endblock %}
 {% block content %}
-</div><p class="align-center color-616161"><i>Interviews about fear of death</i></p>
+</div><p class="align-center color-616161"><i>Interviews about the fear of death</i></p>
 <div class="full-width overflow-hidden">
     <p class="align-center">
     <a class="submit-button" href="{% url 'register' %}">Buy Full Access</a>
     </p>
 </div>
 <div class="full-width overflow-hidden">
-    <h2 class="align-center light-bottom-border">Table of Contents</h2>
-    <div class="third-column background-E0E0E0">
+    <h2 class="align-center light-bottom-border">Interviews</h2>
+    <div class="column">
         <ol>
-        {% for topic in topics_first %}
-            <li><a href="">{{ topic.description }}</a></li>
+        {% for article in articles %}
+        <li><a href="{% url 'article' %}">Example</a></li>
         {% endfor %}
         </ol>
-    </div><div class="third-column third-second-hidden background-E0E0E0">
-        <ol start={{ topics_start_second }}>
-        {% for topic in topics_second %}
-            <li><a href="">{{ topic.description }}</a></li>
-        {% endfor %}
-        </ol>
-    </div><div class="third-column third-first-hidden background-E0E0E0">
-        <ol start={{ topics_start_third }}>
-        {% for topic in topics_third %}
-            <li><a href="">{{ topic.description}}</a></li>
-        {% endfor %}
-        <ol>
     </div>
 </div>
-{% for topic in topics %}
-<br>
-<div class="background-0c ninety-eight-width overflow-hidden clear-both">
-    <h3 class="align-center light-bottom-border">{{ topic.description }}</h3>
-</div>
-<div>
-    <div class="third-column background-F5F5F5">
-            <ol>
-            {% for topic in topics %}
-                <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            </ol>
-        </div><div class="third-column background-F5F5F5 third-second-hidden">
-            <ol>
-            {% for topic in topics %}
-            <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            </ol>
-        </div><div class="third-column background-F5F5F5 third-first-hidden">
-            <ol>
-            {% for topic in topics %}
-                <li><a href="">I'm a nerd</a></li>
-            {% endfor %}
-            </ol>
-        </div>
-</div>
-{% endfor %}
 {% endblock %}
