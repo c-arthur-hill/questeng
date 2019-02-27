@@ -16,7 +16,7 @@ input[type=text], input[type=password], input[type=email], input[type=submit] {
     color: #111;
     font-size: 1.1em;
     padding: .3125em;
-
+    border-radius: 0;
 }
 
 ul {
@@ -26,16 +26,12 @@ ul {
 }
 
 li {
-    margin-bottom: .9375em;
+    margin-bottom: 1.875em;
 }
 
 a {
     text-decoration: none;
     color: #1A0DAB;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Georgia, Times, Times New Roman, serif";
 }
 
 h2, h3, .nav > a.active {
@@ -52,6 +48,23 @@ label, .bold {
 
 a:hover {
     text-decoration: underline;
+}
+
+input[type=submit].submit-button {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    font-size: 1.1em;
+    background-color: #FF1744;
+    border-color: #B71C1C;
+    color: #FFFFFF;
+    box-shadow: 2px 2px 2px #000000;
+    font-weight: bold;
+}
+
+a.active {
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .nav > a :visited {
@@ -74,13 +87,8 @@ a:hover {
     color: #FF1744;
 }
 
-a.active {
-    text-decoration: none;
-    font-weight: bold;
-}
-
 .padding-10 {
-    padding: .625em;
+    padding: 0 .625em .625em .625em;
 }
 
 .padding-5, .submit-button {
@@ -89,22 +97,6 @@ a.active {
 
 .padding-10-5 {
     padding: .625em .3125em;
-}
-
-.submit-button {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-    font-size: 1.25em;
-    background-color: #FF1744;
-    border-color: #B71C1C;
-    color: #FFFFFF;
-    box-shadow: 2px 2px 2px #000000;
-    font-weight: bold;
-}
-
-.submit-button:hover {
-    text-decoration: none;
 }
 
 .highlight {
@@ -123,34 +115,20 @@ a.active {
     margin: 0;
 }
 
-.light-bottom-border {
-    border-bottom: 2px solid #E0E0E0;
-}
-
 .color-616161 {
     color: #616161;
 }
 
-.color-FFF {
-    color: #FFF;
+.background-CFD8DC {
+    background: #CFD8DC;
 }
 
-.background-111 {
-    background: #111;
+.background-ECEFF1 {
+   background: #ECEFF1;
 }
 
-.background-F5F5F5 {
-    background: linear-gradient(45deg, #FFFFFF, #F5F5F5);
-}
-
-.background-E0E0E0 {
-    background: linear-gradient(45deg, #FFFFFF, #E0E0E0);
-}
-
-.third-column {
-    width: 32.33%;
-    margin-right: 1%;
-    float: left;
+.monospace {
+    font-family: courier, "courier new", monospace;
 }
 
 .column {
@@ -161,26 +139,5 @@ a.active {
 
 .clear-both {
     clear: both;
-}
-
-@media only screen and (max-width: 900px) {
-    .third-column {
-        width: 49%;
-        margin-right: 1%;
-    }
-
-    .third-first-hidden {
-        display: none;
-    }
-}
-
-@media only screen and (max-width: 600px) {
-    .third-column{
-        width: 100%;
-    }
-
-    .third-second-hidden {
-        display: none;
-    }
 }
 

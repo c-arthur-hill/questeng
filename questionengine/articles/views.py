@@ -2,31 +2,24 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect
 from .forms import ArticleForm, TopicForm, ParagraphForm, SubHeaderForm
+from accounts.forms import EmailForm
 from .models import Article, Topic
 
 def home(request):
     context = {}
-    topics = Topic.objects.all()
-    topics_len = len(topics)
-    topics_len_third_modulo = topics_len % 3
-    topics_len_third = int(topics_len / 3)
-    topics_start_second = topics_len_third
-    topics_start_third = 2 * topics_len_third
-
-    print(topics_len_third_modulo)
-    if topics_len_third_modulo >= 1:
-        topics_start_second += 1
-        topics_start_third += 1
-    if topics_len_third_modulo == 2:
-        # carryover + extra
-        topics_start_third += 1
-
-    context['articles'] = topics
-    context['topics_first'] = topics[:topics_start_second]
-    context['topics_second'] = topics[topics_start_second:topics_start_third]
-    context['topics_third'] = topics[topics_start_third:]
-    context['topics_start_second'] = topics_start_second + 1
-    context['topics_start_third'] = topics_start_third + 1
+    context['articles'] = Article.objects.all()
+    context['success'] = False
+    form = None
+    if request.method == 'GET':
+        form = EmailForm()
+    elif request.method == 'POST':
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            email = form.save()
+            context['success'] = True
+    else:
+        return HttpResponseForbidden()
+    context['form'] = form
     return render(request, 'home.html', context)
 
 def about(request):
@@ -45,7 +38,7 @@ def create_article(request):
             article.save()
             return redirect('choose_article_part_type', article_id=article.id)
     else:
-        returnHttpResponseForbidden()
+        return HttpResponseForbidden()
     context['header'] = 'Tell Me'
     context['form'] = form
     context['pathname'] = 'create_article'

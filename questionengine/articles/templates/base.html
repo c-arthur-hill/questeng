@@ -8,8 +8,8 @@
 	</head>
 	<body class="">
         <div class="nav full-width align-center">
-            <a class="{% block homelink %}{% endblock %}" 
-               href="{% url 'home' %}">DeathFear</a>
+            <a class="{% block homelink %}{% endblock %} monospace" 
+               href="{% url 'home' %}">DEATH FEAR</a>
             <span> | </span>
             <a class="{% block aboutlink %}{% endblock %}" 
 href="{% url 'about' %}">About</a>
@@ -19,9 +19,6 @@ href="{% url 'about' %}">About</a>
             {% endif %}
         </div>
         <br>
-        <div class="overflow-hidden align-center full-width background-111 color-FFF">
-            <h1>{% block header %}{% endblock %}</h1>
-        </div>
         {% block content %}{% endblock %}
         <div class="footer">
             {% block footer %}{% endblock %}
