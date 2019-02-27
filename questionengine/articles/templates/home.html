@@ -7,8 +7,12 @@
     <h1 class="monospace">DEATH FEAR</h1>
 </div>
 </div><p class="align-center"><i>Interviews about the fear of death</i></p>
+{% if success %}
+    <p class="align-center bold green">Success!</p>
+{% endif %}
 <div class="full-width overflow-hidden align-center">
     <form method="POST">
+        {% csrf_token %}
         {{ form }}
         <input type="submit" class="submit-button" value="Subscribe">
     </form>

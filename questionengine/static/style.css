@@ -141,3 +141,10 @@ a.active {
     clear: both;
 }
 
+.green {
+    color: green;
+}
+
+.bold {
+    font-weight: bold;
+}
